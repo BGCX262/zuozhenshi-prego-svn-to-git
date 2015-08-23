@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+		function toPage(thepage) {
+			document.fm.page.value =  thepage;
+			document.fm.csv.value="";
+			document.fm.submit();
+			
+		}
+</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+<article id="article" class="load">
+		<h2>スペシャリストデスク</h2>
+		<nav>
+			<ul>
+				<li><a href="specialist_unregistered.php"><span>未登録一覧</span></a></li>
+				<li class="active"><a href="specialist_search.php"><span>スペシャリスト検索</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>検索</h3>
+			{{if $auth == '1'}}
+			<div id="search_form">
+				<form name="fm" action="specialist_search.php" method="post" >
+				<input type="hidden" name="page" />
+				<input type="hidden" name="search" value="1" />
+				<input type="hidden" name="csv" />
+					<dl class="noCmp">
+						<dt>フリーワード</dt>
+						<dd>
+							<input type="text" class="long" name="condition" value="{{$forms.condition}}"/>&nbsp;アカウント名、氏名、住所、電話で検索可能
+						</dd>
+					</dl>
+					<dl class="clear">
+						<dt>紹介者への支払有無</dt>
+						<dd>
+						{{foreach from=$introducer_fee item=v key=k}}
+							<label>
+								<input type="checkbox" name="introducer_fee[]" 
+								{{foreach from=$forms.introducer_fee item=vv}}
+									{{if $k == $vv}}
+										checked
+									{{/if}}
+								{{/foreach}}
+								value="{{$k}}"/>{{$v}}</label>
+						{{/foreach}}
+						</dd>
+					</dl>
+					<dl>
+						<dt>紹介料支払状況</dt>
+						<dd>
+						{{foreach from=$introducer_fee_status item=v key=k}}
+							<label>
+								<input type="checkbox" name="introducer_fee_status[]" 
+								{{foreach from=$forms.introducer_fee_status item=vv}}
+									{{if $k == $vv}}
+										checked
+									{{/if}}
+								{{/foreach}}
+								value="{{$k}}"/>{{$v}}</label>
+						{{/foreach}}
+						</dd>
+					</dl>
+					<dl>
+						<dt>契約日</dt>
+						<dd>
+							<input type="text" class="text_date" name="agreement_day_from" value="{{$forms.agreement_day_from}}" />
+							～
+							<input type="text"  class="text_date" name="agreement_day_to" value="{{$forms.agreement_day_to}}"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt>登録料の支払有無</dt>
+						<dd>
+						{{foreach from=$login_fee item=v key=k}}
+							<label>
+								<input type="checkbox" name="login_fee[]" 
+								{{foreach from=$forms.login_fee item=vv}}
+									{{if $k == $vv}}
+										checked
+									{{/if}}
+								{{/foreach}}
+								value="{{$k}}"/>{{$v}}</label>
+						{{/foreach}}
+						</dd>
+					</dl>
+					<dl>
+						<dt>更新料支払開始年月日</dt>
+						<dd>
+							<input type="text" class="text_date" name="update_fee_start_time_from" value="{{$forms.update_fee_start_time_from}}"/>
+							～
+							<input type="text"  class="text_date" name="update_fee_start_time_to" value="{{$forms.update_fee_start_time_to}}"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt>契約終了日</dt>
+						<dd>
+							<input type="text" class="text_date" name="agreement_end_day_from" value="{{$forms.agreement_end_day_from}}"/>
+							～
+							<input type="text"  class="text_date" name="agreement_end_day_to" value="{{$forms.agreement_end_day_to}}"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt>HP掲載可能</dt>
+						<dd>
+						{{foreach from=$hp_arr item=v key=k}}
+							<label>
+								<input type="checkbox" name="hp[]" 
+								{{foreach from=$forms.hp item=vv}}
+									{{if $k == $vv}}
+										checked
+									{{/if}}
+								{{/foreach}}
+								value="{{$k}}"/>{{$v}}</label>
+						{{/foreach}}
+						</dd>
+					</dl>
+					<dl>
+						<dt>スペシャリスト分野</dt>
+						<dd>
+							{{foreach from=$m_prego_pro item=pro key=pk}}
+								<label><input type="checkbox" name="spec_area[]" {{if in_array($pk,$spec_areas)}} checked="checked" {{/if}} value="{{$pk}}" />{{$pro}}</label>
+							{{/foreach}}
+						</dd>
+					</dl>
+					
+					<p class="search_submit">
+						<button type="submit" class="submit" id="btn-export"><span>検索</span></button>
+					</p>
+					<input type="hidden" name="" />
+				</form>
+			</div>
+			{{/if}}
+{{ if is_numeric($page.cnt) }}
+{{ if $page.cnt > 0 }}
+			<p class="message">{{$page.cnt}}件見つかりました。</p>
+			<p align="left" class="pageNav">{{$pageing}}</p>
+			<table id="search_result" class="sortable">
+				<thead>
+					<tr>
+						<th>会員ID</th>
+						<th>アカウント名</th>
+						<th>氏名</th>
+						<th>スペシャリスト分野</th>
+						<th>会社名 OR 称号</th>
+						<th>住所</th>
+						<th>TEL</th>
+						<th>携帯TEL</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				{{foreach from=$data item=v key=k}}
+					<tr>
+						<td>{{$v.id}}</td>
+						<td>{{$v.user_name}}</td>
+						<td>{{$v.spec_name}}</td>
+						<td>
+							{{$v.proname}}
+						</td>
+						<td>
+						{{if $v.corporate_name == ''}}
+							-
+						{{else}}
+							{{$v.corporate_name}}	
+						{{/if}}
+						</td>
+						<td>
+						{{if $v.address == ''}}
+							-
+						{{else}}
+							{{$v.address}}	
+						{{/if}}
+						</td>
+						<td>
+						{{if $v.tel == ''}}
+							-
+						{{else}}
+							{{$v.tel}}
+						{{/if}}
+						</td>
+						<td>
+						{{if $v.phone == ''}}
+							-
+						{{else}}
+							{{$v.phone}}
+						{{/if}}
+						</td>
+						<td class="update"><a href="specialist_refer.php?id={{$v.id}}">参照</a></td>
+					</tr>
+				{{/foreach}}
+				</tbody>
+			</table>
+			<p align="right" class="pageNav">{{$pageing}}</p>
+{{ else }}
+			<p class="message">条件にマッチする情報は見つかりませんでした。</p>
+{{ /if }}
+{{ else }}
+			<p class="message">ここに検索結果が表示されます。</p>
+{{ /if }}
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<style>
+.formTable th span {
+	font-size:12px;
+}
+</style>
+<script type="text/javascript">
+
+
+$(function() {	
+	$('.del_item').live("click",function(){	
+		var deleteItem = function(){
+			that.closest("tr").remove();
+		}
+		var that = $(this);	
+		var v = $('input[type=text]',$(this).closest('tr')).val();
+		if(v != ""){					
+			customConfirm('削除しますか？',"",$(this),function(){
+				deleteItem();
+			});
+		}else {
+			deleteItem();
+		}
+	});
+	//add new item
+	$('#btn_traffic .left a').click(function(){
+		var table = $('#table_traffic');
+		var html = "";
+		html += '<tr>';
+		html += '<th style="width:24px !important;"><a href="javascript:;" class="del_item">削除</a></th>';
+		html += '<td><input type="text" name="traffic_name[]" value="" maxlength="100"></td>';
+		html += '<td><input type="text" name="traffic_fee[]" value="" maxlength="10" style="width:200">円</td>';
+		html += '<td><input type="text" name="traffic_memo[]" value="" maxlength="1000"></td>';
+		html += '<td><input type="text" name="d_time[]" value="" maxlength="100" class="text_date"></td>'
+		html += '<input type="hidden" name="traffic_fee_id[]" value=""/>';
+		html += '</tr>';		
+		var addArea = $('tbody',table);
+		addArea.append(html);	
+		
+
+	});
+	
+	
+	//delete all item with blank field
+	$('#btn_traffic .right a').click(function(){
+		var table = $('#table_traffic');
+		$('tbody input[type=text]',table).each(function(){
+			if(!$(this).val()){
+				$(".del_item",$(this).closest('tr')).click();
+			}
+		});
+	});
+	
+	$('.text_date').live('focusin',function(){
+		$(this).datepicker({
+			 inline: true ,
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd'
+		});
+	});
+	$('.single').click(function(){
+		/*
+		var table = $('#table_fee');
+		var html = "";
+		html += '<tr>';
+		html += '<th style="width:24px !important;"><a href="javascript:;" class="del_item">削除</a></th>';
+		html += '<td><input type="text" name="servers_menu[]" id="servers_menu" value="" maxlength="100"></td>';
+		html += '<td><input type="text" name="spec_fee[]" id="spec_fee" value="" maxlength="10">円</td>';
+		html += '<td><input type="text" name="servers_fee[]" id="servers_fee" value="" maxlength="10">円</td>';
+		html += '<input type="hidden" name="spec_fee_id[]" value=""/>';
+		html += '<input type="hidden" name="service_id[]" id="service_id" value="">';
+		html += '</tr>';
+		var addServiceArea = $('tbody', table);
+		addServiceArea.append(html);
+		*/
+	});
+	
+	/*
+	$('#service_master #content table tbody tr').live('click',function(){
+	
+		var sku = $(this).children().html();
+		var service_menu = $(this).children().next().html();
+		//var spec_fee = $(this).children().next().next().html();
+		//var service_fee = $(this).children().next().next().next().html();
+		var caption = $(this).children().next().next().next().next().html();
+		var memo = $(this).children().next().next().next().next().next().html();
+		//var service_id = $(this).children().next().next().next().next().next().next().children().val();
+		var id =  $(this).attr("id") ;
+		var service_id = id.split("_")[1];
+		var refarr =  $(this).attr("ref").split("_") ;
+		var spec_fee = refarr[0];
+		var service_fee = refarr[1];
+		var model = $("#model").val();
+
+		if (model == 'specl'){
+			if (setSpec(service_id,service_menu,spec_fee,service_fee)){
+				parent.$.colorbox.close();
+			}else {
+				return;
+			}
+		}else if( model != '' ){
+			setSpec(service_id,service_menu,spec_fee,service_fee);
+
+		}else{
+			setService(service_menu,service_id);
+		}
+		parent.$.colorbox.close();
+	
+	});
+	*/
+//  function String.prototype.Trim() { return this.replace(/(^/s*)|(/s*$)/g, ""); }
+});
+
+function setServiceMaster(service_id, service_menu,spec_fee, service_fee ){
+	if (setSpec(service_id,service_menu,spec_fee,service_fee)){
+		parent.$.colorbox.close();
+	}
+	
+}
+function setSpec(service_id,service_menu,spec_fee,service_fee){
+	var checkRet = checkService(service_id);
+	
+	if ( checkRet == 100 ) {
+		var spec_str    = spec_fee* 1;
+		var service_str = service_fee* 1;
+		var table = $('#table_fee');
+		var html = "";
+		html += '<tr>';
+		html += '<th style="width:24px !important;"><a href="javascript:;" class="del_item">削除</a></th>';
+		html += '<td><input type="text" name="servers_menu[]" id="servers_menu" value="' + service_menu + '" maxlength="100"></td>';
+		html += '<td><input type="text" name="spec_fee[]" id="spec_fee" value="' + spec_str + '" maxlength="10">円</td>';
+		html += '<td><input type="text" name="servers_fee[]" id="servers_fee" value="' + service_str+ '" maxlength="10">円</td>';
+		html += '<input type="hidden" name="spec_fee_id[]" value=""/>';
+		html += '<input type="hidden" name="service_id[]" id="service_id" value="' + service_id + '">';
+		html += '</tr>';
+		var addServiceArea = $('tbody', table);
+		addServiceArea.append(html);
+		return true;
+	}else {
+		alert("該当サービスはすでに選択されました");
+	}
+	return false;
+}
+
+function GoToRefer(){
+	var val = document.getElementById("id").value;
+	window.location.href="specialist_refer.php?id="+val;
+}
+
+
+function inputControl(obj){
+	if(obj.checked == true){
+		document.getElementById("spec_area_else").removeAttribute("disabled");
+	}else{
+		document.getElementById("spec_area_else").value = "";
+		document.getElementById("spec_area_else").setAttribute("disabled","true");
+	}
+}
+
+function checkService(inid) {
+	var cdsul   = document.getElementsByName( 'service_id[]');
+	var max = cdsul.length;
+	for(var i=0; i<max; i++){
+		if (inid == cdsul[i].value){
+			return 0;
+		}
+	}
+	return 100;
+}
+
+
+</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+<article id="article" class="load">
+		<h2>スペシャリストデスク</h2>
+		<nav>
+			<ul>
+			{{if $auth == '1'}}
+				<li class="active"><a href="specialist_unregistered.php"><span>未登録一覧</span></a></li>
+				<li><a href="specialist_search.php"><span>スペシャリスト検索</span></a></li>
+			{{elseif $auth == '3'}}
+				<li class="active"><a href="specialist_refer.php"><span>スペシャリスト情報</span></a></li>
+			{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>スペシャリスト{{if $forms.id == '' ||  $forms.insertid !='' }}登録{{else}}更新 {{/if}}{{ if $phase == 'complete' }}完了{{ /if }}{{if $forms.id != ''  ||  $forms.insertid !=''  }}（基本情報+フィー） {{/if}}</h3>
+{{ if $phase == 'input' }}			
+			<p class="message">{{ if $forms.id == ''  ||  $forms.insertid !=''  }}登録{{ else }}更新{{ /if }}内容を確認し、{{ if $forms.id == '' ||  $forms.insertid !=''  }}登録{{ else }}更新{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="specialist_edit.php" method="post">
+				<h4>基本情報</h4>
+				<table class="formTable">
+					<tbody>
+						<tr>
+							<th class="must">Name in Japanese<br /><span>（ 姓名）</span></th>
+							<td>
+								<input type="text" class="text" name="spec_name1" value="{{$spec_forms.spec_name1}}" maxlength="100" style="width:170px" />{{$err.spec_name1}}<input type="text" class="text" name="spec_name2" value="{{$spec_forms.spec_name2}}" maxlength="100" style="width:170px"/>{{$err.spec_name2}}
+							</td>
+						</tr>
+						<tr>
+							<th class="must">surname<br /><span>（アルファベット  ）</span></th>
+							<td>
+								<input type="text" class="text" name="interlingua1" value="{{$spec_forms.interlingua1}}" maxlength="200" style="width:170px"/>{{$err.interlingua1}}<input type="text" class="text" name="interlingua2" value="{{$spec_forms.interlingua2}}" maxlength="200" style="width:170px"/>{{$err.interlingua2}}
+							</td>
+						</tr>
+						<tr>
+							<th class="must">mail address 1<br /><span>（メールアドレス1）</span></th>
+							<td>
+								<input type="text" class="text" name="mail_address1" value="{{$spec_forms.mail_address1}}" maxlength="200"/>{{$err.mail_address1}}
+							</td>
+						</tr>
+						<tr>
+							<th>mail address 2<br /><span>（メールアドレス2）</span></th>
+							<td>
+								<input type="text" class="text" name="mail_address2" value="{{$spec_forms.mail_address2}}" maxlength="200"/>{{$err.mail_address2}}
+							</td>
+						</tr>
+						<tr>
+							<th>business field<br /><span>（スペシャリスト分野）</span></th>
+							<td>
+							
+							{{foreach from=$m_prego_pro item=v key=k}}
+								{{if $k != 99}}
+								<label><input type="checkbox" name="spec_area[]" {{if in_array($k,$spec_areas)}}checked="checked"{{/if}} value="{{$k}}" />{{$v}}</label>
+								{{/if}}
+							{{/foreach}}
+								<label><input type="checkbox" onclick="inputControl(this)" name="spec_area_d" {{if $spec_area_else}}checked="checked"{{/if}} value="99"/>その他（自由記入)</label>
+								<input type="text" name="spec_area_else" id="spec_area_else" {{if $spec_area_else==''}} disabled="true"  {{/if}} value="{{$spec_area_else}}" maxlength="50"/>
+							</td>
+						</tr>
+						<tr>
+							<th>Company name<br /><span>（会社名or商号）</span><br />(if any)</th>
+							<td>
+								<input type="text" class="text" name="corporate_name" value="{{$spec_forms.corporate_name}}" maxlength="100" />{{$err.corporate_name}}
+							</td>
+						</tr>
+						<tr>
+							<th>zip code<br /><span>（郵便番号）</span></th>
+							<td class="floats">
+								<input type="text" class="short post1" name="region" value="{{$region}}" maxlength="3"/>
+								<span> - </span>
+								<input type="text" class="short post2" name="branch" value="{{$branch}}" maxlength="4"/>
+								<span class="btn_blank"><a href="javascript:;" style="position:relative;top:-2px;" class="searchAddress1">住所検索</a></span>
+								{{$err.post_code}}
+							</td>
+						</tr>
+						<tr>
+							<th>State<br /><span>（都道府県）</span></th>
+							<td>{{ html_options name='pro_cd' options=$prego_local id="select_id" selected=$spec_forms.pro_cd}}{{$err.pro_cd}}</td>
+						</tr>
+						<tr>
+							<th>home address<br /><span>（住所）</span></th>
+							<td><input type="text" class="text resultAddress" name="address1" value="{{$spec_forms.address1}}" maxlength="200"/>{{$err.address1}}</td>
+						</tr>
+						<tr>
+							<th>TEL<br /><span>（電話番号）</span></th>
+							<td>
+								<input type="text" class="short" name="area_code" value="{{$area_code}}" maxlength="5"/> - 
+								<input type="text" class="short" name="office_number" value="{{$office_number}}" maxlength="5"/> -
+								<input type="text" class="short" name="called_number" value="{{$called_number}}" maxlength="4"/>
+								{{$err.tel}}
+							</td>
+						</tr>
+						<tr>
+							<th>TEL cell phone<br /><span>（携帯電話番号）</span></th>
+							<td>
+								<input type="text" class="short" name="cell1" value="{{$cell1}}" maxlength="5"/> - 
+								<input type="text" class="short" name="cell2" value="{{$cell2}}" maxlength="5"/> - 
+								<input type="text" class="short" name="cell3" value="{{$cell3}}" maxlength="4"/>
+								{{$err.phone}}
+							</td>
+						</tr>
+						<tr>
+							<th>FAX<br /><span>（FAX番号）</span></th>
+							<td>
+								<input type="text" class="short" name="fax1" value="{{$fax1}}" maxlength="5"/> - 
+								<input type="text" class="short" name="fax2" value="{{$fax2}}" maxlength="5"/> - 
+								<input type="text" class="short" name="fax3" value="{{$fax3}}" maxlength="4"/>
+								{{$err.fax}}
+							</td>
+						</tr>
+						<tr>
+							<th>Birthday y/m/d<br /><span>（生年月日）</span></th>
+							<td>
+								<input type="text" class="short" name="birthday_year" value="{{$birthday_year}}" maxlength="4"/> 年 
+								<input type="text" class="short" name="birthday_month" value="{{$birthday_month}}" maxlength="2"/> 月
+								<input type="text" class="short" name="birthday_day" value="{{$birthday_day}}" maxlength="2"/> 日
+								{{$err.birthday}}
+							</td>
+						</tr>
+											</tbody>
+				</table>
+<p align="left">以下は、プレゴのみ表示</p>
+<hr>
+										<table class="formTable">
+					<tbody>
+						<tr>
+							<th>紹介者</th>
+							<td>
+								<input type="text" class="text" name="introducer" value="{{$spec_forms.introducer}}" maxlength="50"/>{{$err.introducer}}
+							</td>
+						</tr>
+						<tr>
+							<th>紹介者への支払い有無</th>
+							<td>
+							{{if $spec_forms.introducer_fee != ''}}
+{{ html_radios id='introducer_fee' name='introducer_fee' options=$introducer_fee selected=$spec_forms.introducer_fee }}
+							{{else}}
+{{ html_radios id='introducer_fee' name='introducer_fee' options=$introducer_fee selected='1' }}	
+							{{/if}}
+							{{$err.introducer_fee}}
+							</td>
+						</tr>
+						<tr>
+							<th>紹介料支払い状況</th>
+							<td>
+							{{if $spec_forms.introducer_fee_status != ''}}
+{{ html_radios id='introducer_fee_status' name='introducer_fee_status' options=$introducer_fee_status selected=$spec_forms.introducer_fee_status }}
+							{{else}}
+{{ html_radios id='introducer_fee_status' name='introducer_fee_status' options=$introducer_fee_status selected='1' }}							
+							{{/if}}								
+								<input type="text" class="text_date" name="introducer_fee_status_time" value="{{$spec_forms.introducer_fee_status_time}}"/>
+								{{$err.introducer_fee_status_time}}
+							</td>
+						</tr>
+						<tr>
+							<th>契約日</th>
+							<td class="floats">
+								<input type="text" class="text_date" name="agreement_day" value="{{$spec_forms.agreement_day}}" />{{$err.agreement_day}}
+							</td>
+						</tr>
+						<tr>
+							<th>契約条件</th>
+							<td>
+								<input type="text" class="text" name="agreement_condition" value="{{$spec_forms.agreement_condition}}" maxlength="200"/>{{$err.agreement_condition}}
+							</td>
+						</tr>
+						<tr>
+							<th>登録料の支払有無</th>
+							<td>
+							{{if $spec_forms.login_fee !=''}}
+{{ html_radios id='login_fee' name='login_fee' options=$login_fee selected=$spec_forms.login_fee }}							
+							{{else}}
+{{ html_radios id='login_fee' name='login_fee' options=$login_fee selected='1' }}							
+							{{/if}}
+
+							{{$err.login_fee}}
+							</td>
+						</tr>
+						<tr>
+							<th>更新料の支払有無</th>
+							<td>
+							{{if $spec_forms.update_fee != ''}}
+{{ html_radios id='update_fee' name='update_fee' options=$update_fee selected=$spec_forms.update_fee }}
+							{{else}}
+{{ html_radios id='update_fee' name='update_fee' options=$update_fee selected='1' }}							
+							{{/if}}						
+							{{$err.update_fee}}
+							</td>
+						</tr>
+						<tr>
+							<th>更新料支払い開始年月日</th>
+							<td class="floats">
+								<input type="text" class="text_date" name="update_fee_start_time" value="{{$spec_forms.update_fee_start_time}}" />{{$err.update_fee_start_time}}
+							</td>
+						</tr>
+						<tr>
+							<th>契約終了日</th>
+							<td class="floats">
+								<input type="text" class="text_date" name="agreement_end_day" value="{{$spec_forms.agreement_end_day}}" />{{$err.agreement_end_day}}
+							</td>
+						</tr>
+						<tr>
+							<th>HP掲載可能</th>
+							<td>
+							{{if $spec_forms.hp != ''}}
+{{ html_radios id='hp' name='hp' options=$hp_arr selected=$spec_forms.hp }}							
+							{{else}}
+{{ html_radios id='hp' name='hp' options=$hp_arr selected='1' }}							
+							{{/if}}
+								
+							{{$err.hp}}
+							</td>
+						</tr>
+						<tr>
+							<th>銀行名</th>
+							<td>
+								<input type="text" class="text" name="bank_name" value="{{$spec_forms.bank_name}}" maxlength="100" />{{$err.bank_name}}
+							</td>
+						</tr>
+						<tr>
+							<th>支店名</th>
+							<td>
+								<input type="text" class="text" name="shop_name" value="{{$spec_forms.shop_name}}" maxlength="100"/>{{$err.shop_name}}
+							</td>
+						</tr>
+						<tr>
+							<th>口座種類</th>
+							<td>
+							{{if $spec_forms.account_kinds != ''}}
+{{ html_radios id='account_kinds' name='account_kinds' options=$account_kinds selected=$spec_forms.account_kinds }}						
+							{{else}}
+{{ html_radios id='account_kinds' name='account_kinds' options=$account_kinds selected='1' }}
+							{{/if}}
+							{{$err.account_kinds}}						
+							</td>
+						</tr>
+						<tr>
+							<th>口座番号</th>
+							<td>
+								<input type="text" class="text" name="account_code" value="{{$spec_forms.account_code}}" maxlength="10"/>{{$err.account_code}}
+							</td>
+						</tr>
+						<tr>
+							<th>口座名義</th>
+							<td>
+								<input type="text" class="text" name="account_titular" value="{{$spec_forms.account_titular}}" maxlength="200"/>{{$err.account_titular}}
+							</td>
+						</tr>
+						<tr>
+							<th>口座名義フリガナ</th>
+							<td>
+								<input type="text" class="text" name="account_titular_name" value="{{$spec_forms.account_titular_name}}" maxlength="200"/>{{$err.account_titular_name}}
+							</td>
+						</tr>
+						<tr>
+							<th>法人 OR 個人選択</th>
+							<td>
+							{{if $spec_forms.person_choose != ''}}
+{{ html_radios id='person_choose' name='person_choose' options=$person_choose selected=$spec_forms.person_choose }}					
+							{{else}}
+{{ html_radios id='person_choose' name='person_choose' options=$person_choose selected='1' }}
+							{{/if}}
+
+							{{$err.person_choose}}								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{{if $auth == '1' && $forms.id != '' }}
+				<h4>交通費マスター</h4>
+				
+				<ul class="btns b10" id="btn_traffic">
+					<li class="btn left c"><a href="javascript:;">追加する</a></li>
+					<li class="btn right c"><a href="javascript:;">空の項目を削除</a></li>
+				</ul>
+				
+				<table class="formTable" id="table_traffic">
+					<thead>
+						<tr>
+							<th style="width:24px !important;"></th>
+							<th>交通費名称</th>
+							<th>交通費</th>
+							<th>備考</th>
+							<th>登録年月日</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$spec_traffic_fee_forms item=v name="member" key=k}}
+						<tr>
+							<th style="width:24px !important;"><a href="javascript:;" class="del_item">削除</a></th>
+							<td><input type="text" name="traffic_name[]" value="{{$v.traffic_name}}" maxlength="100">{{$err.traffic_name[$smarty.foreach.member.index]}}</td>
+							<td><input type="text" name="traffic_fee[]" value="{{$v.traffic_fee}}" maxlength="10" style="width:200">円{{$err.traffic_fee[$smarty.foreach.member.index]}}</td>
+							<td><input type="text" name="traffic_memo[]" value="{{$v.traffic_memo}}" maxlength="1000">{{$err.traffic_memo[$smarty.foreach.member.index]}}</td>
+							<td><input type="text" name="d_time[]" value="{{$d_time[$k]}}" maxlength="100" class="text_date" >{{$err.traffic_memo[$smarty.foreach.member.index]}}</td>
+							<input type="hidden" name="traffic_fee_id[]" value="{{$v.id}}"/>
+						</tr>
+					{{/foreach}}
+					</tbody>
+				</table>
+				<h4>フィー情報</h4>
+				
+				<ul class="btns b10" id="btn_fee">
+					<li class="btn single c"><a href="popup_service_master.php?model=specl&aa=qaa" class="popup">サービスを追加</a></li>
+				</ul>
+				
+				<table class="formTable" id="table_fee">
+					<thead>
+						<tr>
+							<th style="width:24px !important;"></th>
+							<th>サービスメニュー</th>
+							<th>スペシャリストフィー</th>
+							<th>サービスフィー</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$servers_forms item=v name="member"}}
+						<tr>
+							<th style="width:24px !important;"><a href="javascript:;" class="del_item">削除</a></th>
+							<td><input type="text" name="servers_menu[]" value="{{$v.servers_menu}}">{{$err.servers_menu[$smarty.foreach.member.index]}}</td>
+							<td><input type="text" name="spec_fee[]" value="{{$v.spec_fee}}">円{{$err.spec_fee[$smarty.foreach.member.index]}}</td>
+							<td><input type="text" name="servers_fee[]" value="{{$v.servers_fee}}">円{{$err.servers_fee[$smarty.foreach.member.index]}}</td>
+							<input type="hidden" name="spec_fee_id[]" value="{{$v.id}}"/>
+							<input type="hidden" name="service_id[]" id="service_id" value="{{$v.service_id}}">
+						</tr>
+					{{/foreach}}
+					</tbody>
+				</table>
+				<!-- ADD 
+				<h4>プロフィール情報</h4>
+				
+				<ul class="btns b10">
+					<li class="btn left c"><a href="specialist_profile.php?spec_id={{$forms.id}}">追加</a></li>
+					{{if $auth == '3'}}
+						<li class="btn right c"><a href="mailto:">変更依頼</a></li>
+					{{/if}}
+				</ul>
+				
+				<table class="formTable" id="table_fee">
+					<thead>
+						<tr>
+							<th>プロフィール名</th>
+							<th>登録日</th>
+							<th>更新日</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$spec_profile_forms item=v}}
+						<tr>
+							<td class="td_name"><a href="popup_specialist_profile1.php?id={{$v.id}}" class="popup">{{$v.profile_name}}</a></td>
+							<td>{{$v.c_time}}</td>
+							<td>{{$v.u_time}}</td>
+							<!-- 
+							<td style="width:70px;"><span class="btn_blank"><a class="blank" href="specialist_profile.php?id={{$v.id}}">更新</a></span></td>
+						</tr>
+					{{/foreach}}
+					</tbody>
+				</table>
+				 -->
+				{{/if}}
+				<p class="button">
+				
+					{{if $forms.id}}
+						<button type="button" class="btn_back" onclick="GoToRefer()" ><span>戻る</span></button>
+						<button type="submit" class="btn_update" class="submit" ><span>更新</span></button>
+					{{else}}
+						<!-- 
+						<button type="button" class="btn_back" onclick="GoToUnregistered()" ><span>戻る</span></button>
+						 -->
+						<button type="button" class="btn_regist" class="submit"><span>登録</span></button>
+					{{/if}}
+				</p>
+				<input type="hidden" name="id" id="id" value="{{ $forms.id }}" />
+				<input type="hidden" name="mode" value="" />
+				<input type="hidden" name="account_id" value="{{$account_id}}"  />
+				<input type="hidden" name="specialist_id" value="{{$specialist_id}}"  />
+			</form>
+		</section>
+	</article>
+</div>
+{{/if}}
+{{ if $phase == 'complete' }}
+			<p class="message">{{ $message }}</p>
+			<ul class="result_btn">
+			{{if $forms.id != '' }}
+				<li><a href="specialist_search.php?hist=2">一覧に戻る</a></li>
+				<li><a href="specialist_edit.php?id={{$specialist_id}}">登録した内容を更新</a></li>
+			{{else}}
+				<li><a href="specialist_unregistered.php">続けて新規登録する</a></li>
+				<li><a href="specialist_edit.php?id={{$specialist_id}}">登録した内容を更新</a></li>
+			{{/if}}
+			</ul>
+{{/if}}
+<footer id="dashboard_footer">{{$footer}}</footer>
+<script type="text/javascript">
+$('.searchAddress1').click(function(){
+	var p = $(this).closest("td");
+	var table = $(this).closest("table");
+	var post1 = $('.post1',p).val();
+	var post2 = $('.post2',p).val();
+	if(post1 == "" || post2 == ""){return;}
+	var post = post1 +""+ post2;
+	zip2address(post, function(address) {
+		if (address) {
+			$('.resultAddress',table).val(address.city);
+			$('#select_id option:contains("' +  address.pref+ '")').each(function(){
+				 $(this).attr('selected', 'selected');
+			});
+			var index = $('#select_id').index(); 
+			var span = $('#select_id').siblings().get(index-1);
+			$(span).text(address.pref);
+		}
+		else {
+			alert("見つかりませんでした。。\n入力した郵便番号に誤りがないか、お確かめ下さい。");
+		}
+	});
+});
+</script>
+</body>
+</html>

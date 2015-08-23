@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+
+<script type="text/javascript">
+$(function() {	
+	var html = '<table class="formTable"><tbody>';
+	html += '<tr><th><a href="javascript:;" class="del_item">削除</a>担当者</th><td><input type="text" class="text" name="tantou_name[]" maxlength="100"/></td></tr>';
+	html += '<tr><th>メールアドレス</th><td><input type="text" class="text" name="mail_address[]" maxlength="100"/></td></tr>';
+	html += '<input type="hidden" name="tantou_id[]" value="" />';
+	html += '</tbody></table>';
+	setAppendCtrl("#charge",html);
+});
+/*
+function GoToUnregistered(){
+	window.location.href="corporate_unregistered.php";
+}
+*/
+function GoToRefer(){
+	var val = document.getElementById("id").value;
+	window.location.href="corporate_refer.php?id="+val;
+}
+
+</script>
+
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>クライアント様デスク</h2>
+		<nav>
+			<ul>
+				{{if $auth == '1'}}
+					<li class="active"><a href="corporate_unregistered.php"><span>未登録一覧</span></a></li>
+					<li ><a href="corporate_search.php"><span>クライアント検索</span></a></li>
+				{{elseif $auth == '2'}}
+					<li class="active"><a href="corporate_refer.php"><span>クライアント情報</span></a></li>
+				{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>クライアント様情報{{if $forms.id == '' }}登録{{else}} 更新{{/if}}{{ if $phase == 'complete' }}完了{{ /if }}</h3>
+{{ if $phase == 'input' }}
+			<p class="message">{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}内容を確認し、{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="corporate_edit.php" method="post" >
+				<h4>基本情報</h4>
+						
+				<table class="formTable">
+					<tbody>
+{{ if $forms.id != '' }}
+						<tr>
+							<th>ID</th>
+							<td>{{$corporate_forms.id}}</td>
+						</tr>
+						<tr>
+							<th>登録日時</th>
+							<td>{{ $corporate_forms.c_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="c_time" value="{{ $corporate_forms.c_time }}" /></td>
+						</tr>
+						<tr>
+							<th>更新日時</th>
+							<td>{{ $corporate_forms.u_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="u_time" value="{{ $corporate_forms.u_time }}" />
+							</td>
+						</tr>
+{{/if}}
+						<tr>
+							<th class="must">会社名</th>
+							<td><input type="text" class="text" name="corporate_name" value="{{$corporate_forms.corporate_name}}" maxlength="100"  />{{$err.corporate_name}}</td>
+						</tr>
+						<tr>
+							<th>フリガナ</th>
+							<td><input type="text" class="text" name="another_name" value="{{$corporate_forms.another_name}}" maxlength="100"  />{{$err.another_name}}</td>
+						</tr>
+						<tr>
+							<th>部署名</th>
+							<td><input type="text" class="text" name="post_name" value="{{$corporate_forms.post_name}}" maxlength="100"  />{{$err.post_name}}</td>
+						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td class="floats">
+								<input type="text" class="short post1" name="region" value="{{$region}}" maxlength="3"  />
+								<span> - </span>
+								<input type="text" class="short post2" name="branch" value="{{$branch}}" maxlength="4"  />
+								<span class="btn_blank"><a href="javascript:;" style="position:relative;top:-2px;" class="searchAddress">住所検索</a></span>
+								{{$err.post_code}}
+							</td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td><input type="text" class="text resultAddress" name="address" value="{{$corporate_forms.address}}" maxlength="200"  />{{$err.address}}</td>
+						</tr>
+						<tr>
+							<th class="must">TEL</th>
+							<td>
+								<input type="text" class="short" name="area_code" value="{{$area_code}}" maxlength="5"  /> - 
+								<input type="text" class="short" name="office_number" value="{{$office_number}}" maxlength="5"  /> - 
+								<input type="text" class="short" name="called_number" value="{{$called_number}}" maxlength="4"  />
+								{{$err.tel}}
+							</td>
+						</tr>
+						<tr>
+							<th>代表者名</th>
+							<td><input type="text" class="text" name="present" value="{{$corporate_forms.present}}" maxlength="50"  />{{$err.present}}</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td><input type="text" class="text" name="url" value="{{$corporate_forms.url}}" maxlength="200"  />{{$err.url}}</td>
+						</tr>
+						{{if $auth == '1'}}
+						<tr>
+							<th>備考</th>
+							<td><textarea name="memo" maxlength="1000" style="width:400px"  >{{$corporate_forms.memo}}</textarea>{{$err.memo}}</td>
+						</tr>
+						{{/if}}
+					</tbody>
+				</table>
+				<h4>担当者</h4>
+				
+				<ul class="btns b10">
+					<li class="btn left c"><a href="javascript:;">担当者を追加</a></li>
+					<li class="btn right c"><a href="javascript:;">空の担当者を削除</a></li>
+				</ul>
+				<div id="charge" class="appendArea">
+				
+				{{if $tantou_forms != ''}}
+					{{foreach from=$tantou_forms item=v name="member" key=k }}
+						<table class="formTable">
+							<tbody>
+								<tr>
+									<th {{if $k == 0}}class="must"{{/if}}>
+									{{if $k != 0}}
+										<a href="javascript:;" class="del_item">削除</a>
+									{{/if}}
+										担当者
+									</th>
+									<td><input type="text" class="text" name="tantou_name[]" value="{{$v.tantou_name}}" maxlength="100"  />{{$err.tantou_name[$smarty.foreach.member.index]}}</td>
+								</tr>
+								<tr>
+									<th {{if $k == 0}}class="must"{{/if}}>メールアドレス</th>
+									<td><input type="text" class="text" name="mail_address[]" value="{{$v.mail_address}}" maxlength="100"  />{{$err.mail_address[$smarty.foreach.member.index]}}</td>
+								</tr>
+								<input type="hidden" name="tantou_id[]" value="{{$v.id}}" />
+							</tbody>
+						</table>
+					{{/foreach}}
+				{{else}}
+					<table class="formTable">
+						<tbody>
+							<tr>
+								<th class="must">担当者</th>
+								<td><input type="text" class="text" name="tantou_name[]" maxlength="100"/></td>
+							</tr>
+							<tr>
+								<th class="must">メールアドレス</th>
+								<td><input type="text" class="text" name="mail_address[]" maxlength="100"/></td>
+							</tr>
+						<input type="hidden" name="tantou_id[]" value="" />
+						</tbody>
+					</table>
+				{{/if}}
+				
+				</div>
+				
+				<p class="button">
+
+					{{if $forms.id}}
+						<button type="button" class="btn_back" onclick="GoToRefer()"><span>戻る</span></button>
+						<button type="submit" class="btn_update" class="submit"><span>更新</span></button>
+					{{else}}
+						<!--  
+						<button type="button" class="btn_back" onclick="GoToUnregistered()" ><span>戻る</span></button>
+						-->
+						<button type="button" class="btn_regist" class="submit"><span>登録</span></button>
+					{{/if}}
+				</p>
+				<input type="hidden" name="id" id="id" value="{{$forms.id}}" />
+				<input type="hidden" name="mode" value="" />
+				<input type="hidden" name="account_id" value="{{$account_id}}"  />
+				<input type="hidden" name="corporate_id" value="{{$corporate_id}}"  />
+				<input type="hidden" name="insert_true" value="1">
+			</form>
+		</section>
+	</article>
+</div>
+{{/if}}
+{{ if $phase == 'complete' }}
+					<p class="message">{{ $message }}</p>
+					
+					<ul class="result_btn">
+						{{if $forms.id != ''}}
+							{{if $auth == '1'}}
+							<li><a href="corporate_search.php?hist=2">一覧に戻る</a></li>
+							{{/if}}
+							<li><a href="corporate_edit.php?id={{$corporate_id}}">登録した内容を更新</a></li>
+						{{else}}
+							<li><a href="corporate_unregistered.php">続けて新規登録する</a></li>
+							<li><a href="corporate_edit.php?id={{$corporate_id}}">登録した内容を更新</a></li>
+						{{/if}}
+							
+					</ul>
+{{/if}}
+
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

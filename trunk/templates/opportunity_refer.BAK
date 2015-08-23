@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<link href="./assets/styles/page/opportunity_refer.css" rel="stylesheet" media="print" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var t1 = $('#table1');
+		var t2 = $('#table2');
+		
+		$('#original1').clone().appendTo(t1);
+		$('#original2').clone().appendTo(t2);
+		
+		var removeCell = function(){
+			var t1 = $('#table1');
+			$('.t1_client',t1).html("お取引先様名");
+			var t2 = $('#table2');
+			$('.re',t2).remove();
+		}
+		removeCell();
+		$('.btn_help').unbind().click(function(){
+			$('a',this).click();
+		});
+	});
+	
+	
+var temp;
+function setObj(obj){
+	temp = $(obj).parent().prev().prev().prev();
+}
+function locaRefresh(){
+	window.location.href="opportunity_refer.php?id={{$promise_forms.id}}";
+}
+function SetContractHelp(){
+	//var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id={{$promise_forms.id}}";
+}
+function setSpecAgree(){
+	var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id="+promise_id;
+}
+
+function setCommMemo(pro_spec_id,overtime_have,overtime_fee,traffic_fee_have,traffic_fee_master,traffic_fee,
+		traffic_fee_detail,live_fee_have,live_fee,live_fee_detail,other_fee_have,other_fee,other_fee_name,other_fee_detail){
+	var str = "&&pro_spec_id="+pro_spec_id+"&&overtime_have="+overtime_have+"&&overtime_fee="+overtime_fee+"&&traffic_fee_have="+traffic_fee_have+"&&traffic_fee_master="+traffic_fee_master;
+	str += "&&traffic_fee="+traffic_fee+"&&traffic_fee_detail="+traffic_fee_detail+"&&live_fee_have="+live_fee_have+"&&live_fee="+live_fee;
+	str += "&&live_fee_detail="+live_fee_detail+"&&other_fee_have="+other_fee_have+"&&other_fee="+other_fee+"&&other_fee_name="+other_fee_name+"&&other_fee_detail="+other_fee_detail;
+	var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id="+promise_id+str;
+}
+
+function SetCancelFee(){
+	var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id="+promise_id;
+}
+
+function SetConfirmCancel(){
+	var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id="+promise_id;
+}
+
+function SetSatisfy(count_id,satisfy_status){
+	var promise_id = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?id="+promise_id+"&&satisfy_status="+satisfy_status+"&&count_id="+count_id;
+}
+
+function GoToSearch(){
+	window.location.href="opportunity_search.php?hist=2";
+}
+
+</script>
+
+<style type="text/css">
+	#print {
+		display:none;
+	}
+</style>
+
+<title>コントロールパネル</title>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>約定デスク</h2>
+		<nav>
+			<ul>
+				<li class="active"><a href="opportunity_search.php"><span>案件検索</span></a></li>
+				{{if $auth == '1'}}
+					<li><a href="opportunity_edit.php"><span>案件登録</span></a></li>
+				{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>案件情報参照</h3>
+			<form name="fm" action="opportunity_edit.php" method="get">
+				<input type="hidden" id="id" name="id" value="{{$promise_forms.id}}"/>
+			
+			<h4>基本情報</h4>
+			<table class="formTable" id="original1">
+				<tbody>
+					<tr>
+						<th>ID</th>
+						<td>{{$promise_forms.id}}</td>
+					</tr>
+					<tr>
+						<th>登録日時</th>
+						<td>{{$promise_forms.u_time}}</td>
+					</tr>
+					<tr>
+						<th>更新日時</th>
+						<td>{{$promise_forms.c_time}}</td>
+					</tr>
+					<tr>
+						<th class="t1_client">クライアント</th>
+						<td>{{$promise_forms.corporate_name}}</td>
+					</tr>
+					<tr>
+						<th>案件名</th>
+						<td>{{$promise_forms.promise_name}}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h4>サービス情報</h4>
+			<table id="search_result" class="sortable">
+				<thead>
+					<tr>
+						<th width="3%">ID</th>
+						<th width="20%">スペシャリスト</th>
+						<th>サービス名</th>
+						<th width="10%">実施日</th>
+						<th width="12%">価格</th>
+						<th class="btn_help" width="10%">約定状況<a href="popup_contract_help.php" class="popup">ヘルプ</a></th>
+						<th width="5%">完了F</th>
+						<th>CF</th>
+						<th>操作ボタン</th>
+						<th>処理履歴</th>
+						{{if $auth != '3'}}
+						<th>アンケート</th>
+						{{/if}}
+					</tr>
+				</thead>
+				<tbody>
+				{{foreach from=$promise_spec_forms item=v key=k}}
+					<tr>
+						<td>{{$v.id}}</td>
+						<td class="td_name">{{if $v.spec_name != ''}}{{$v.spec_name}}{{else}}-{{/if}}<br/>
+							<a href="popup_specialist_profile1.php?id={{$v.profile_id}}" class="popup">
+								{{foreach from=$fee item=vv key=kk}}
+									{{if $v.profile_id == $vv.profile_id && $v.service_name == $vv.service_name}}
+										{{$vv.profile_name}}
+									{{/if}}
+								{{/foreach}}
+							</a>
+						</td>
+						<td>{{if $v.service_name != ''}}{{$v.service_name}}{{else}}-{{/if}}</td>
+						<td>
+							{{if $v.doing_time != ''}}
+								{{$v.dodate}}<br>{{$v.dotime}}
+							{{else}}
+								-
+							{{/if}}
+						</td>
+						<td>
+							{{if $v.profile_id != ''}}
+								{{if $fee != ''}}
+									{{foreach from=$fee item=vv key=kk}}
+										{{if $v.profile_id == $vv.profile_id && $v.service_name == $vv.service_name}}
+											{{if $auth == '2'}}
+												{{$vv.servers_fee|number_format}}円
+											{{elseif $auth == '3'}}
+												{{$vv.spec_fee|number_format}}円
+											{{else}}
+												{{$vv.spec_fee|number_format}}円/{{$vv.servers_fee|number_format}}円
+											{{/if}}
+										{{/if}}
+									{{/foreach}}
+								{{else}}
+									-
+								{{/if}}							
+							{{else}}
+								-
+							{{/if}}
+						</td>
+						
+						<!-- TODO -->
+						{{if $v.status == '0'}}
+								{{if $auth == '2'}}
+									<td>未発注</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_client_agreement" class="popup" >発注確定</a>
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_cancel_fee" class="popup">キャンセル</a>
+									</td>
+								{{elseif $auth == '3'}}
+									<td>未発注</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								{{else}}
+									<td>未発注</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_client_agreement" class="popup" >発注確定</a>
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_cancel_fee" class="popup">キャンセル</a>
+									</td>
+								{{/if}}
+						{{elseif $v.status == '1'}}
+								{{if $auth == '2'}}
+									<td>発注確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_cancel_fee" class="popup">キャンセル</a>
+									</td>
+								{{elseif $auth == '3'}}
+									<td>発注確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_specialist_agreement" class="popup" >受注確定</a>
+									</td>
+								{{else}}
+									<td>発注確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_specialist_agreement" class="popup" >受注確定</a>
+									</td>
+								{{/if}}
+						{{elseif $v.status == '2'}}
+								{{if $auth == '2'}}
+									<td>約定確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_cancel_fee" class="popup">キャンセル</a>
+									</td>
+								{{elseif $auth == '3'}}
+									<td>約定確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&status={{$v.status}}&&nm=popup_communication_memo" class="popup" >業務完了</a>
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&status={{$v.status}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&nm=popup_confirm_cancel" class="popup">業務実施無し</a>
+									</td>
+								{{else}}
+									<td>約定確定</td>
+									<td>-</td>
+									<td>-</td>
+									<td class="wide">
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&status={{$v.status}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&nm=popup_communication_memo" class="popup" >業務完了</a>
+										<a href="popup_all_states.php?id={{$v.id}}&&promise_id={{$v.promise_id}}&&status={{$v.status}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}&&nm=popup_confirm_cancel" class="popup">業務実施無し</a>
+									</td>
+								{{/if}}
+						{{elseif $v.status == '3'}}
+								{{if $auth == '2'}}
+									<td>業務完了</td>
+									<td>O</td>
+									<td>-</td>
+									<td>-</td>
+								{{elseif $auth == '3'}}
+									<td>業務完了</td>
+									<td>O</td>
+									<td>-</td>
+									<td>-</td>
+								{{else}}
+									<td>業務完了</td>
+									<td>O</td>
+									<td>-</td>
+									<td>-</td>
+								{{/if}}
+						{{elseif $v.status == '4'}}
+								{{if $auth == '2'}}
+									<td>キャンセル済</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{elseif $auth == '3'}}
+									<td>キャンセル済</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{else}}
+									<td>キャンセル済</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{/if}}
+						{{elseif $v.status == '5'}}
+								{{if $auth == '2'}}
+									<td>業務Ｓキャンセル</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{elseif $auth == '3'}}
+									<td>業務Ｓキャンセル</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{else}}
+									<td>業務Ｓキャンセル</td>
+									<td>-</td>
+									<td>O</td>
+									<td>-</td>
+								{{/if}}
+						{{/if}}
+						<td class="update align-center"><a href="popup_process_history.php?promise_id={{$v.promise_id}}&&promise_spec_id={{$v.id}}&&spec_id={{$v.spec_id}}&&service_id={{$v.service_id}}" class="popup">参照</a></td>
+						{{if $auth != '3'}}
+							{{if $v.status == '3'}}
+								{{if $v.satisfy_status == '01'}}
+									<td class="wide align-center">不満足</td>
+								{{elseif $v.satisfy_status == '02'}}
+									<td class="wide align-center">満足した</td>
+								{{elseif $v.satisfy_status == '03'}}
+									<td class="wide align-center">どちらでもない</td>
+								{{else}}
+									<td class="wide align-center"><a href="popup_enquete.php?id={{$v.id}}" class="popup">アンケート</a></td>
+								{{/if}}
+							{{else}}
+								<td>-</td>
+							{{/if}}
+						{{/if}}
+					</tr>
+				{{/foreach}}
+				</tbody>
+			</table>
+			<p class="button">
+				<button type="button" class="btn_back" onclick="GoToSearch()"><span>戻る</span></button>
+				{{if $auth == '1'}}
+					<button type="submit" class="btn_update disp"><span>更新</span></button>
+				{{/if}}
+				<button type="button" class="btn_print_wide" onclick="print();"><span>業務約定書を印刷する</span></button>
+			</p>
+			</form>
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+
+<div id="print">
+	<p id="print_logo">
+		<img src="./assets/images/common/logo.gif" alt="Prego" /><br />
+	</p>
+	<p id="print_text">
+		合同会社プレゴ<br />
+		〒145-0071<br />
+		東京都大田区田園調布2-51-4 第一開発ビル2F
+	</p>
+	<div id="table1"></div>
+	<div id="table2"></div>
+	<ul id="print_list">
+		<li><strong>未発注</strong>：約定がされていません。スペシャリストのスケジュール確保はこの状態では、確定できていません。</li>
+		<li><strong>発注確定</strong>：クライアント様がプレゴに発注した状態です。スペシャリストのスケジュール確保はこの状態では、確定できていません。</li>
+		<li><strong>約定確定</strong>：クライアント様がプレゴに発注し、スペシャリストが受託を確定しています。スペシャリストのスケジュール確保が決定しています。</li>
+		<li><strong>キャンセル済</strong>：約定がキャンセルされた状態です。</li>
+		<li><strong>業務完了</strong>：約定された業務が遂行完了された状態です。</li>
+		<li><strong>業務Ｓキャンセル</strong>：天変地異、悪天候、突然の傷病などで業務が遂行されなかった状態です。</li>
+	</ul>
+	<p id="print_last">
+		キャンセル等の委託条件については、委託規定をご参照ください。<br />
+		プレゴへのお問い合わせ・ご利用を誠にありがとうございます。
+	</p>
+</div>
+
+</body>
+</html>

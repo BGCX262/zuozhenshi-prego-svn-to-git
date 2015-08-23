@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<link href="./assets/styles/refer.css" rel="stylesheet" />
+<link href="./assets/styles/refer_print.css" rel="stylesheet" media="print" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+
+<script type="text/javascript">
+	$(function(){
+		$('.btn_check').unbind('click').live('click',function(){
+			//var spec_id = $("#spec_id").val();
+			var spec_ids = $("#spec_id").val();
+			var pay_time = $("#pay_time").val();
+			var pay_status = $("#pay_status").val();
+			var promise_spec_id = $("#promise_spec_id").val();
+			var flag = "btn_chk";
+			window.location.href="payment_search.php"+"?hist=2&&spec_id="+spec_id+"&&pay_time="+pay_time+"&&flag="+flag+"&&promise_spec_id="+promise_spec_id+'&&pay_status='+pay_status+"&&spec_ids="+spec_ids;
+		});
+		
+		$('.btn_fix').unbind('click').live('click',function(){
+			//var btn_fix = $('#btn_fix').val('btn_fix');
+			var spec_id = $("#spec_id").val();
+			var pay_time = $("#pay_time").val();
+			var pay_status = $("#pay_status").val();
+			var promise_spec_id = $("#promise_spec_id").val();
+			var flag = "btn_fix";
+			window.location.href="payment_search.php"+"?hist=2&&spec_id="+spec_id+"&&pay_time="+pay_time+"&&flag="+flag+"&&promise_spec_id="+promise_spec_id+'&&pay_status='+pay_status+"&&spec_ids="+spec_id;
+		});
+		
+	});
+	function GoToPaymentRefer(){
+		window.location.href="payment_search.php?hist=2";
+	}
+	
+	
+</script>
+
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>支払デスク</h2>
+		<nav>
+			<ul>
+				<li class="active"><a href="payment_search.php"><span>支払検索</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>支払参照</h3>
+			<div id="view">
+				<div id="refer_content">
+					<div id="logo">
+						<p><img src="./assets/images/common/logo.gif" alt="Prego" /></p>
+					</div>
+					<div id="firstRow">
+						<p class="title">業務委託支払明細書</p>
+						<p>日付：{{$date}}</p>
+					</div>
+					<div id="secondRow">
+						<p class="left">
+							{{$spec_data.spec_name}} 様<br />
+							〒{{$spec_data.post_code}}<br />
+							{{$spec_data.address}}<br />
+							TEL：{{$spec_data.tel}}
+						</p>
+						<p class="right">
+							合同会社Prego<br />
+							〒145-0071<br />
+							東京都大田区田園調布2-51-4<br />
+							第一開発ビル2F<br />
+							TEL：03-6459-7355
+						</p>
+					</div>
+					<div id="listTable">
+						<h2>業務委託</h2>
+		<table class="table1">
+			<thead>
+				<tr>
+					<th>案件名</th>
+					<th>サービス名{{$p_obj_text}}</th>
+					<th>スペシャリスト</th>
+					<th>金額</th>
+					<th>実施日</th>
+					<th>備考</th>
+				</tr>
+			</thead>
+			<tbody>
+			{{foreach from=$promise_rows item=v key=k}}
+					<tr><td>{{$v.promise_name}}</td>
+						<td>{{$v.service_name}}{{$p_obj_text}}</td>
+						<td>{{$v.spec_name}}</td>
+						<td align ="right">￥{{$v.spec_fee|number_format}}</td>
+						<td align ="center">{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+						<td></td></tr>
+			{{/foreach}}
+							</tbody>
+						</table>
+				<table class="table2">
+				
+					<tr>
+						<th>小計 ： </th>
+						<td>￥{{$before_tax|number_format}}</td>
+					</tr>
+					<tr>
+						<th>{{if $spec_data.person_choose == '1'}}源泉徴収税{{else}}消費税{{/if}} ： </th>
+						<td>￥{{$tax|number_format}}</td>
+					</tr>
+				
+					<tr>
+						<th class="bold">合計{{$formsum.A}} ： </th>
+						<td class="bold">￥{{$after_tax|number_format}}</td>
+					</tr>
+				</table>
+					</div>
+
+					<div id="listTable">
+						<h2>交通費/経費/材料費</h2>
+						<table class="table1">
+							<thead>
+								<tr>
+									<th>案件名</th>
+									<th>サービス名</th>
+									<th>分類</th>
+									<th>金額</th>
+									<th>実施日</th>
+									<th>備考</th>
+								</tr>
+							</thead>
+							<tbody>
+{{foreach from=$promise_rows item=v key=k}}
+		{{if $v.overtime_fee != 0 }}
+					<tr>
+						<td>{{$v.promise_name}}</td>
+						<td>{{$v.service_name}}</td>
+						<td>残業費</td>
+						<td align = "right">￥{{$v.overtime_fee|number_format}}</td>
+						<td align ="center">{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+						<td></td>
+					</tr>
+		{{/if}}
+		{{if $v.traffic_fee != 0 }}
+					<tr>
+						<td>{{$v.promise_name}}</td>
+						<td>{{$v.service_name}}</td>
+						<td>交通費</td>
+						<td align = "right">￥{{$v.traffic_fee|number_format}}</td>
+						<td align ="center">{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+						<td>{{$v.traffic_fee_detail}}</td>
+					</tr>
+		{{/if}}
+		{{if $v.live_fee != 0 }}
+					<tr>
+						<td>{{$v.promise_name}}</td>
+						<td>{{$v.service_name}}</td>
+						<td>宿泊費</td>
+						<td align = "right">￥{{$v.live_fee|number_format}}</td>
+						<td align ="center">{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+						<td>{{$v.live_fee_detail}}</td>
+					</tr>
+		{{/if}}
+		{{if $v.other_fee != 0 }}
+					<tr>
+						<td>{{$v.promise_name}}</td>
+						<td>{{$v.service_name}}</td>
+						<td>{{$v.other_fee_name}}</td>
+						<td align = "right">￥{{$v.other_fee|number_format}}</td>
+						<td align ="center">{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+						<td>{{$v.other_fee_detail}}</td>
+					</tr>
+		{{/if}}
+{{/foreach}}
+							</tbody>
+						</table>
+						<table class="table2">
+							<tr>
+								<th class="bold">合計B ： </th>
+								<td class="bold">￥{{$traffic_fee|number_format}}</td>
+							</tr>
+						</table>
+					</div>
+
+
+					<div id="listTable">
+						<h2>その他</h2>
+						<table class="table1">
+							<thead>
+								<tr>
+									<th>内容</th>
+									<th>分類</th>
+									<th>金額</th>
+								</tr>
+							</thead>
+							<tbody><!--  支払日前倒し払い交通費-->
+							
+							{{foreach from=$payment_add_data item=v}}
+								<tr>
+									<td>{{$v.content}}</td>
+									<td>&nbsp;</td>
+									<td align = "right">￥{{$v.money|number_format}}</td>
+								</tr>
+							{{/foreach}}
+							</tbody>
+						</table>
+						<table class="table2">
+							<tr>
+								<th class="bold">合計C ： </th>
+								<td class="bold">￥{{$other_num|number_format}}</td>
+							</tr>
+						</table>
+						
+					</div>
+
+					<div id="total">
+						<dl>
+							<dt>合計{{$formsum.ALL}}</dt>
+							<dd>￥{{$all_num|number_format}}</dd>
+						</dl>
+					</div>
+
+					<div id="lastRow">
+						<p>支払予定日：{{$date_now_ym}}末日</p>
+						<ul>
+							<li>振込先：</li>
+							<li class="large">{{$spec_data.bank_name}}　{{$spec_data.shop_name}}　
+							{{foreach from=$prego_account_kinds item=v key=k}}
+								{{if $k == $spec_data.account_kinds}}
+									{{$v}}
+								{{/if}}
+							{{/foreach}}預金　{{$spec_data.account_code}}</li>
+							<li class="large">{{$spec_data.account_titular}}　{{$spec_data.account_titular_name}}</li>
+							<li class="small">
+								出勤表送付先:　合同会社PREGO　　〒145-0071 東京都大田区田園調布2－51－4　第一開発ビル2F	<br />
+								〇内容をご確認いただき、来月3日までにご不明点等ございましたら、プレゴにご連絡下さい。<br />
+								〇業務委託支払明細書をプレゴに郵送いただく必要は、ございません。<br />
+								〇4日以降のご連絡については、受付できませんので、ご理解のほど、よろしく御願いします。<br />
+								出勤表は、月初3日までにプレゴにご郵送いただくよう、よろしくお願い致します。<br />
+								尚、出勤表が3日中未着の場合は支払が一カ月遅れる可能性があります。
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<p class="button">
+				<button type="button" class="btn_back" onclick="GoToPaymentRefer()"><span>戻る</span></button>
+				<button type="button" class="btn_print" onclick="print()"><span>印刷</span></button>
+				{{if $hidden_pay_status != '1'}}
+					<button type="button" class="btn_check"><span>OK</span></button>
+				{{/if}}
+				<button type="button" class="btn_fix" id="btn_fix"><span>要修正</span></button>
+				<input type="hidden" name="btn_fix"/>
+			</p>
+			<input type="hidden" id="spec_id" value="{{$hidden_spec_id}}"/>
+			<input type="hidden" id="pay_time" value="{{$hidden_pay_time}}"/>
+			<input type="hidden" id="pay_status" value="{{$hidden_pay_status}}"/>
+			<input type="hidden" id="promise_spec_id" value="{{$hidden_promise_spec_id}}"/>
+			
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+
+<div id="print"></div>
+
+</body>
+</html>

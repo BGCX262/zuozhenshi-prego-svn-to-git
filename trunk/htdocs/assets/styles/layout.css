@@ -1,0 +1,26 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/layout.css
+	DESCRIPTION:	layout css
+************************************************************/
+
+body {
+	background:#d3d2d2 url(../images/common/background.gif);
+}
+
+#container {
+	padding:38px 0 0;
+	width:100%;
+	clear:both;
+	position:relative;
+}
+
+footer {
+	position:fixed;
+	z-index:9;
+	left:0;
+	bottom:0;
+	width:100%;
+	background-color: #AA352D;
+	color:#fff;
+}

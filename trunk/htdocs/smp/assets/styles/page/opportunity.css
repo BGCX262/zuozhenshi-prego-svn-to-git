@@ -1,0 +1,50 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/page/opportunity.css
+	DESCRIPTION:	opportunity css
+************************************************************/
+
+.content h2 span {
+	cursor:pointer;
+	padding-left:30px;
+	display:block;
+	background:url(../../images/common/accordion_close.png) left center no-repeat;
+}
+
+.content h2.active span {
+	background:url(../../images/common/accordion_open.png) left center no-repeat;
+}
+
+/* going
+--------------------------------------------------------*/
+
+.content {
+	overflow:hidden;
+}
+
+.content > a {
+	display:block;
+	margin:5px 5px 10px;
+	border-radius: 4px;
+	text-shadow: 0 1px 0 #fff;
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(246,246,246,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0 ); /* IE6-9 */
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 0 #fff inset, 0 -1px 0 #fff inset, 0 1px 1px rgba(0,0,0,0.1);
+	padding: 0 6px;
+	position: relative;
+}
+
+.content > a dl {
+	background:url(../../images/common/arrow_right.png) right center no-repeat !important;
+}
+
+.content > a dl dd {
+	border-bottom:1px solid #e5e5e5;
+}

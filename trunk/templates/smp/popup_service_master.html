@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/popup.css" rel="stylesheet" />
+
+<script src="./assets/scripts/popup.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+
+<script type="text/javascript">
+	$(function(){
+		$('#service_master #content table tbody tr').unbind('click').on('click',function(){
+			var sku = $(this).children().html();
+			var service_menu = $(this).children().next().html();
+			//var spec_fee = $(this).children().next().next().html();
+			//var service_fee = $(this).children().next().next().next().html();
+			var caption = $(this).children().next().next().next().next().html();
+			var memo = $(this).children().next().next().next().next().next().html();
+			//var service_id = $(this).children().next().next().next().next().next().next().children().val();
+			var id =  $(this).attr("id") ;
+			var service_id = id.split("_")[1];
+			var refarr =  $(this).attr("ref").split("_") ;
+			var spec_fee = refarr[0];
+			var service_fee = refarr[1];
+			var model = $("#model").val();
+
+			if (model == 'specl'){
+				if (setSpec(service_id,service_menu,spec_fee,service_fee)){
+					parent.$.colorbox.close();
+				}else {
+					return;
+				}
+			}else if( model != '' ){
+				setSpec(service_id,service_menu,spec_fee,service_fee);
+
+			}else{
+				setService(service_menu,service_id);
+			}
+			parent.$.colorbox.close();
+		});
+	});
+	//  function String.prototype.Trim() { return this.replace(/(^/s*)|(/s*$)/g, ""); }
+</script>
+
+</head>
+<body>
+<div class="thisPopup" id="service_master">
+
+<header>
+	<h1><span>&nbsp;</span>サービスマスタ選択</h1>
+</header>
+
+<section id="content">
+<input type="hidden" name="model" id="model" value="{{$model}}"/>
+{{foreach from=$category_data item=v}}
+<div>
+	<h2>{{$v.category_name}}</h2>
+			<table class="sortable">
+						<thead>
+					        <tr>
+								<th>SKU</th>
+								<th>サービスメニュー</th>
+								<th>スペシャリストフィー</th>
+								<th>サービスフィー</th>
+								<th>キャプション</th>
+								<th>メモ</th>
+					        </tr>
+					    </thead>
+	{{foreach from=$service_data item=vv}}
+		{{if $v.id == $vv.category_id}}
+			    <tbody>
+			    	 <tr id ='{{$v.id}}_{{$vv.id}}' ref="{{$vv.spec_fee}}_{{$vv.service_fee}}">
+						<td>{{$vv.sku}}</td>
+						<td>{{$vv.service_menu}}</td>
+						<td>
+						{{if $vv.spec_fee != ''}}
+						{{$vv.spec_fee}}円
+						{{/if}}</td>
+						<td>
+						{{if $vv.service_fee != ''}}
+						{{$vv.service_fee}}円
+						{{/if}}
+						</td>
+						<td>{{$vv.caption}}</td>
+						<td>{{$vv.memo}}</td>
+						<input type="hidden" name="service_id" value="{{$vv.id}}" />
+			        </tr>
+			    </tbody>
+		{{/if}}
+	{{/foreach}}
+			</table>
+
+</div>
+{{/foreach}}
+</section>
+</div>
+</body>
+</html>

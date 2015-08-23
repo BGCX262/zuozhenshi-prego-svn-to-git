@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$('.btn_regist').click(function(){
+		//alert('aaaaa');
+	});
+</script>
+<title>コントロールパネル</title>
+</head>
+
+<body>
+
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>クライアント様デスク</h2>
+
+		<nav>
+			<ul>
+				<li class="active"><a href="corporate_unregistered.php"><span>未登録一覧</span></a></li>
+				<li ><a href="corporate_search.php"><span>クライアント検索</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>登録内容を確認し</h3>
+			<form name="fm" action="corporate_edit.php" method="post" >
+				<h4>基本情報</h4>
+
+				<table class="formTable">
+					<tbody>
+					
+						<tr>
+							<th>会社名</th>
+							<td>{{$forms.corporate_name}}</td>
+						</tr>
+						<tr>
+							<th>フリガナ</th>
+							<td>{{$forms.another_name}}</td>
+						</tr>
+						<tr>
+							<th>部署名</th>
+							<td>{{$forms.post_name}}</td>
+						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td>
+							{{$forms.region}}-{{$forms.branch}}
+							</td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td>{{$forms.address}}</td>
+						</tr>
+						<tr>
+							<th>TEL</th>
+							<td>
+								{{$forms.area_code}}-{{$forms.office_number}}-{{$forms.called_number}}
+							</td>
+						</tr>
+						<tr>
+							<th>代表者名</th>
+							<td>{{$forms.present}}</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td>{{$forms.url}}</td>
+						</tr>
+							<tr>
+								<th>備考</th>
+								<td >
+								{{$forms.memo}}
+								</td>
+							</tr>
+					</tbody>
+				</table>
+				<h4>担当者</h4>
+				<input type="hidden" name="insertforms" value="1"/>
+				<div id="charge" class="appendArea">
+				
+					<table class="formTable">
+						<tbody>
+						{{foreach from=$forms.mutirow item=v key=k }}
+							<tr>
+								<th>担当者</th>
+								<td>{{$v.tantou_name}}</td>
+							</tr>
+							<tr>
+								<th>メールアドレス</th>
+								<td>{{$v.mail_address}}</td>
+							</tr>
+						{{/foreach}}
+						</tbody>
+					</table>
+				
+				</div>
+				<p class="button">
+					<button type="button" class="btn_regist" class="submit"><span>登録確定</span></button>
+				</p>
+			</form>
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

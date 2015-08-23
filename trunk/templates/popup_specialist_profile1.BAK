@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/popup.css" rel="stylesheet" />
+
+<script src="./assets/scripts/popup.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+$(function(){
+	$('#cartoon_url').unbind('click').click(function(){
+		var url = $(this).data('url');
+		window.open(url, 'mywindow2', 'width=600, height=700, menubar=no, toolbar=no, scrollbars=yes');
+	});
+});
+</script>
+
+</head>
+<body>
+<div class="thisPopup" id="specialist_profile">
+
+<section id="content">
+
+	<h1><img src="./assets/images/common/logo.gif" alt="Prego" /></h1>
+
+	<p class="img">
+		{{if $image != ''}}
+			<img src="{{$image}}" />
+		{{/if}}
+	</p>
+
+	<h2>{{$speclist_forms.spec_name}}</h2>
+	<h3>{{$speclist_forms.interlingua}}</h3>
+	<h4>{{$spec_profile_forms.title}}</h4>
+
+	<p class="summary">{{$spec_profile_forms.summary}}</p>
+
+	<table>
+		<tbody>
+			<tr>
+				<td>{{$speclist_forms.birthday}}</td>
+				<td>{{$spec_profile_forms.address}}</td>
+			</tr>
+			<tr>
+				<td>{{$spec_profile_forms.experience}}</td>
+				<td>{{$spec_profile_forms.qualifications}}</td>
+			</tr>
+			<tr>
+				<td>{{$spec_profile_forms.actual_result}}</td>
+				<td>{{$spec_profile_forms.famous}}</td>
+			</tr>
+
+			<tr>
+				<td>
+				{{if $spec_profile_forms.cartoon_url != ''}}
+					<ul class="btns b10">
+						<li class="btn single c"><a id="cartoon_url" href="javascript:;" data-url="{{$spec_profile_forms.cartoon_url}}">動画を見る</a></li>
+					</ul>
+				{{/if}}
+				<!--
+				<a href="{{$spec_profile_forms.cartoon_url}}">{{$spec_profile_forms.cartoon_url}}</a></td>
+				-->
+				{{if $auth == '1'}}
+				<td>
+					{{foreach from=$spec_fee_data item=v}}
+						{{if $spec_profile_forms.fee_message_a != '' && $v.servers_menu == $spec_profile_forms.fee_message_a}}
+							{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+						{{elseif $spec_profile_forms.fee_message_b != '' && $v.servers_menu == $spec_profile_forms.fee_message_b}}
+							{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+						{{elseif $spec_profile_forms.fee_message_c != '' && $v.servers_menu == $spec_profile_forms.fee_message_c}}
+							{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円
+						{{/if}}
+					{{/foreach}}
+				</td>
+				{{/if}}
+			</tr>
+
+		</tbody>
+	</table>
+
+</section>
+</div>
+</body>
+</html>

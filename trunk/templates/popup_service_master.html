@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/popup.css" rel="stylesheet" />
+
+<script src="./assets/scripts/popup.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+</head>
+<body>
+<div class="thisPopup" id="service_master">
+
+<header>
+	<h1><span>&nbsp;</span>サービスマスタ選択</h1>
+</header>
+
+<section id="content">
+<input type="hidden" name="model" id="model" value="{{$model}}"/>
+{{foreach from=$category_data item=v}}
+<div>
+	<h2>{{$v.category_name}}</h2>
+			<table class="sortable">
+						<thead>
+					        <tr>
+								<th>SKU</th>
+								<th>サービスメニュー</th>
+								<th>スペシャリストフィー</th>
+								<th>サービスフィー</th>
+								<th>操作</th>
+					        </tr>
+					    </thead>
+	{{foreach from=$service_data item=vv}}
+		{{if $v.id == $vv.category_id}}
+			    <tbody>
+			    	 <tr id ='{{$v.id}}_{{$vv.id}}' >
+						<td>{{$vv.sku}}</td>
+						<td>{{$vv.service_menu}}</td>
+						<td>
+						{{if $vv.spec_fee != ''}}
+						{{$vv.spec_fee|number_format}}円（ス）
+						{{else}}
+						-（ス）
+						{{/if}}
+						</td>
+						<td>
+						{{if $vv.service_fee != ''}}
+						{{$vv.service_fee|number_format}}円（サ）
+						{{else}}
+						-（サ）
+						{{/if}}
+						</td>
+						<td class="preview" ><a href="javascript:setServiceMaster('{{$vv.id}}','{{$vv.service_menu}}','{{$vv.spec_fee}}','{{$vv.service_fee}}')">セット</a></td>
+						<input type="hidden" name="service_id" value="{{$vv.id}}" />
+			        </tr>
+			    </tbody>
+		{{/if}}
+	{{/foreach}}
+			</table>
+
+</div>
+{{/foreach}}
+</section>
+</div>
+</body>
+</html>

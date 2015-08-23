@@ -1,0 +1,115 @@
+<?php /* Smarty version 2.6.26, created on 2013-03-25 16:40:11
+         compiled from login.html */ ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+		@import url('./assets/styles/default.css');
+		@import url('./assets/styles/page/login.css');
+	</style>
+	<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+
+	<script>
+		$(function(){
+			$('input[name=email]').focus();
+
+			var txt = $('h2 span');
+			var cngText = function(t){
+				txt.fadeOut(300,function(){
+					txt.removeClass("error").text(t).fadeIn(300)
+				})
+			}
+
+			$('.forget a').click(function(){
+				$('form').animate({'left':'-400px'},500);
+				cngText("IDを入力してください。");
+			});
+			$('.back a').click(function(){
+				$('form').animate({'left':'0'},500);
+				cngText("IDとパスワードを入力してください。");
+			});
+
+			if($('.error').length){
+				$('#window')
+					.css({"opacity":"1",'top':'50%'})
+					.animate({"left":"51%"},100)
+					.animate({"left":"49%"},100)
+					.animate({"left":"51%"},100)
+					.animate({"left":"49%"},100)
+					.animate({"left":"50%"},100);
+			}else {
+				$('#window').animate({
+					"opacity":1,
+					"top":"50%"
+				},300);
+			}
+
+			if(jQuery.browser.msie && parseInt(jQuery.browser.version) == 7){
+				// ie7は調整が必要なためとりあえず除外
+			}else {
+				//2回目用に一度イベントを解除しておく
+				$('input[type=radio],input[type=checkbox]').unbind();
+
+				//初めに全て走査して、labelに対して要素に対応したクラス付与とチェック済クラス付与
+				$('input[type=radio],input[type=checkbox]').each(function(){
+					var p = $(this).parent();
+					p.removeClass($(this).attr('type')).addClass($(this).attr('type'));
+					if($(this).attr('checked')){
+						p.addClass('checked');
+					}
+				});
+
+				//radioの監視
+				$('input[type=radio]').change(function(){
+					var name = $(this).attr('name');
+					$('input[name=' + '"' + name + '"' +']').parent().removeClass('checked');
+					$(this).parent().addClass('checked');
+				});
+
+				//checkboxの監視
+				$('input[type=checkbox]').change(function(){
+					if($(this).attr('checked')){
+						$(this).parent().addClass('checked');
+					}else {
+						$(this).parent().removeClass('checked');
+					}
+				});
+			}
+		});
+	</script>
+ 	<title>コントロールパネル></title>
+</head>
+<body>
+<header id="login_header">
+	<h1 id="logo">
+		<a href="index.php">コントロールパネル</a>
+	</h1>
+	</header>
+	<article>
+	    <section id="window">
+	        <h2>
+		<?php if (! $this->_tpl_vars['err']): ?><span>IDとパスワードを入力してください。</span>
+		<?php else: ?><span class="error">IDまたはパスワードが間違っています。</span><?php endif; ?>
+	</h2>
+	        <div id="inner_wrapper">
+	        	<div id="inner">
+	        		<form id="loginForm" action="login.php" method="post">
+	        			<ul>
+	        				<li class="id"><input type="text" name="login_id" value="<?php echo $this->_tpl_vars['cooki_login_id']; ?>
+" maxlength="20" /></li>
+	        				<li class="pass"><input type="password" name="login_pass" value="<?php echo $this->_tpl_vars['cooki_login_pass']; ?>
+" maxlength="50"/></li>
+	        			</ul>
+	        		    <p class="submit">
+	        		    	<input type="submit" name="submit" value="LOGIN" name="submit" />
+	        		    </p>
+	        		</form>
+	        	</div>
+	        </div>
+	    </section>
+	</article>
+	<footer id="dashboard_footer"><?php echo $this->_tpl_vars['footer']; ?>
+</footer>
+	</body>
+	</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+<article id="article" class="load">
+		<h2>スペシャリストデスク</h2>
+		<nav>
+			<ul>
+			{{if $auth == '1'}}
+				<li class="active"><a href="specialist_unregistered.php"><span>未登録一覧</span></a></li>
+				<li><a href="specialist_search.php"><span>スペシャリスト検索</span></a></li>
+			{{elseif $auth == '3'}}
+				<li class="active"><a href="specialist_refer.php"><span>スペシャリスト情報</span></a></li>
+			{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>スペシャリスト情報 参照</h3>
+			<form name="">
+				<h4>基本情報</h4>
+				<table class="formTable">
+					<tbody>
+						<tr>
+							<th>会員ID</th>
+							<td>{{$spec_forms.id}}</td>
+						</tr>
+						<tr>
+							<th>登録日時</th>
+							<td>{{$spec_forms.c_time}}</td>
+						</tr>
+						<tr>
+							<th>更新日時</th>
+							<td>{{$spec_forms.u_time}}</td>
+						</tr>
+						<tr>
+							<th>アカウント名</th>
+							<td>{{$account_name}}</td>
+						</tr>
+
+						<tr>
+							<th>氏名</th>
+							<td>{{$spec_forms.spec_name}}</td>
+						</tr>
+						<tr>
+							<th>アルファベット</th>
+							<td>{{$spec_forms.interlingua}}</td>
+						</tr>
+						<tr>
+							<th>メールアドレス1</th>
+							<td>{{$spec_forms.mail_address1}}</td>
+						</tr>
+						<tr>
+							<th>メールアドレス2</th>
+							<td>{{$spec_forms.mail_address2}}</td>
+						</tr>
+						<tr>
+							<th>スペシャリスト分野</th>
+							<td>
+							{{$proname}}
+							</td>
+						</tr>
+						<tr>
+							<th>会社名 OR 商号</th>
+							<td>{{$spec_forms.corporate_name}}</td>
+						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td>{{$spec_forms.post_code}}</td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td>{{$spec_forms.address}}</td>
+						</tr>
+						<tr>
+							<th>TEL</th>
+							<td>{{$spec_forms.tel}}</td>
+						</tr>
+						<tr>
+							<th>携帯TEL</th>
+							<td>{{$spec_forms.phone}}</td>
+						</tr>
+						<tr>
+							<th>FAX</th>
+							<td>{{$spec_forms.fax}}</td>
+						</tr>
+						<tr>
+							<th>生年月日</th>
+							<td>{{$spec_forms.birthday}}</td>
+						</tr>
+											</tbody>
+				</table>
+{{if $auth == '1'}}
+<p align="left">以下は、プレゴのみ表示</p>
+<hr>
+				<table class="formTable">
+					<tbody>
+						<tr>
+							<th>紹介者</th>
+							<td>{{$spec_forms.introducer}}</td>
+						</tr>
+						<tr>
+							<th>紹介者への支払い有無</th>
+							<td>
+								{{foreach from=$introducer_fee item=v key=k}}
+									{{if $k == $spec_forms.introducer_fee && $spec_forms.introducer_fee != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>紹介者支払い状況</th>
+							<td>
+								{{foreach from=$introducer_fee_status item=v key=k}}
+									{{if $k == $spec_forms.introducer_fee_status && $spec_forms.introducer_fee_status != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>契約日</th>
+							<td>{{$spec_forms.agreement_day}}</td>
+						</tr>
+						<tr>
+							<th>契約条件</th>
+							<td>{{$spec_forms.agreement_condition}}</td>
+						</tr>
+						<tr>
+							<th>登録料の支払有無</th>
+							<td>
+								{{foreach from=$login_fee item=v key=k}}
+									{{if $k == $spec_forms.login_fee && $spec_forms.login_fee != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>更新料の支払有無</th>
+							<td>
+								{{foreach from=$update_fee item=v key=k}}
+									{{if $k == $spec_forms.update_fee && $spec_forms.update_fee != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>更新料支払い開始年月日</th>
+							<td class="floats">{{$spec_forms.update_fee_start_time}}</td>
+						</tr>
+						<tr>
+							<th>契約終了日</th>
+							<td class="floats">{{$spec_forms.agreement_end_day}}</td>
+						</tr>
+						<tr>
+							<th>HP掲載可能</th>
+							<td>
+								{{foreach from=$hp_arr item=v key=k}}
+									{{if $k == $spec_forms.hp && $spec_forms.hp != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>銀行名</th>
+							<td>{{$spec_forms.bank_name}}</td>
+						</tr>
+						<tr>
+							<th>支店名</th>
+							<td>{{$spec_forms.shop_name}}</td>
+						</tr>
+						<tr>
+							<th>口座種類</th>
+							<td>
+								{{foreach from=$account_kinds item=v key=k}}
+									{{if $k == $spec_forms.account_kinds && $spec_forms.account_kinds != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+						<tr>
+							<th>口座番号</th>
+							<td>{{$spec_forms.account_code}}</td>
+						</tr>
+						<tr>
+							<th>口座名義</th>
+							<td>{{$spec_forms.account_titular}}</td>
+						</tr>
+						<tr>
+							<th>口座名義フリガナ</th>
+							<td>{{$spec_forms.account_titular_name}}</td>
+						</tr>
+						<tr>
+							<th>法人 OR 個人選択</th>
+							<td>
+								{{foreach from=$person_choose item=v key=k}}
+									{{if $k == $spec_forms.person_choose && $spec_forms.person_choose != ''}}
+										{{$v}}
+									{{/if}}
+								{{/foreach}}
+							</td>
+						</tr>
+											</tbody>
+				</table>
+{{/if}}
+
+
+				<h5 style="text-align:left;">交通費情報</h5>
+
+				<table class="formTable" id="table_traffic">
+					<thead>
+						<tr>
+							<th>交通費名称</th>
+							<th>交通費</th>
+							<th>備考</th>
+							<th>登録年月日</th>
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$spec_traffic_fee_forms item=v key=k}}
+						<tr>
+							<td>{{$v.traffic_name}}</td>
+							<td>
+							{{if $v.traffic_fee != ''}}
+								{{$v.traffic_fee|number_format}}円
+							{{/if}}
+							</td>
+							<td>{{$v.traffic_memo}}</td>
+							<td>{{$d_time[$k]}}</td>
+						</tr>
+					{{/foreach}}
+					</tbody>
+				</table>
+
+				<h5 style="text-align:left;">フィー情報</h5>
+
+				<table class="formTable" id="table_fee">
+					<thead>
+						<tr>
+							<th>サービスメニュー</th>
+							<th>スペシャリストフィー</th>
+							{{if $auth == '1'}}
+							<th>サービスフィー</th>
+							{{/if}}
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$spec_fee_forms item=v}}
+						<tr>
+							<td>{{$v.servers_menu}}</td>
+							<td>
+							{{if $v.spec_fee != ''}}
+								{{$v.spec_fee|number_format}}円
+							{{/if}}
+							</td>
+							{{if $auth == '1'}}
+								<td>
+								{{if $v.servers_fee != ''}}
+									{{$v.servers_fee|number_format}}円
+								{{/if}}
+								</td>
+							{{/if}}
+						</tr>
+					{{/foreach}}
+					</tbody>
+				</table>
+				<p class="button" style="padding-bottom:20px !important;">
+				<button type="button" class="btn_back" onclick="location.href='specialist_search.php?hist=2'" ><span>戻る</span></button>
+				{{if $auth == '1'}}
+					<button type="button" class="btn_update no disp" onclick="location.href='specialist_edit.php?id={{$forms.id}}'"><span>情報を追加する</span></button>
+				{{/if}}
+				</p>
+				<h4 class="clear">プロフィール情報</h4>
+
+				<ul class="btns b10">
+					{{if $auth == '1'}}
+						<li class="btn left c"><a href="specialist_profile.php?spec_id={{$forms.id}}">追加</a></li>
+					{{/if}}
+					{{if $auth == '3'}}
+						{{if $spec_forms != ''}}
+							<li class="btn right c"><a href="mailto:">変更依頼</a></li>
+						{{/if}}
+					{{/if}}
+				</ul>
+
+				<table class="formTable" id="table_fee">
+					<thead>
+						<tr>
+							<th>プロフィール名</th>
+							<th>登録日</th>
+							<th>更新日</th>
+							{{if $auth == '1'}}
+							<th>操作</th>
+							{{/if}}
+						</tr>
+					</thead>
+					<tbody>
+					{{foreach from=$spec_profile_forms item=v}}
+						<tr>
+							<td class="td_name"><a href="{{$have_profile_url}}{{$v.have_profile_url}}&pop=1" class="popup">{{$v.profile_name}}</a></td>
+							<td>{{$v.c_time}}</td>
+							<td>{{$v.u_time}}</td>
+
+							{{if $auth == '1'}}
+							<td >
+
+							<span ><a class="blank" href="specialist_profile.php?id={{$v.id}}">プロフィールを編集</a></span></td>
+							{{/if}}
+						</tr>
+						{{if $v.have_profile_url }}
+							<tr><td colspan="5"><a href="{{$have_profile_url}}{{$v.have_profile_url}}">{{$have_profile_url}}{{$v.have_profile_url}}（履歴あり）</a></td></tr>
+						{{/if}}
+						{{if $v.have_no_profile_url}}
+							<tr><td colspan="5"><a href="{{$have_no_profile_url}}{{$v.have_no_profile_url}}">{{$have_no_profile_url}}{{$v.have_no_profile_url}}（履歴なし）</a></td></tr>
+						{{/if}}
+					{{/foreach}}
+					</tbody>
+				</table>
+				<!--
+				<p class="button">
+					<button type="button" class="btn_back" onclick="location.href="";"><span>戻る</span></button>
+					<button type="button" class="btn_regist"><span>登録</span></button>
+				</p>
+				 -->
+			</form>
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="../assets/styles/profile.css" rel="stylesheet" />
+{{if $pop != '1'}}
+<script src="../assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+{{/if}}
+<script src="../assets/scripts/popup.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+$(function(){
+	$('#cartoon_url').unbind('click').click(function(){
+		var url = $(this).data('url');
+		window.open(url, 'mywindow2', 'width=600, height=700, menubar=no, toolbar=no, scrollbars=yes');
+	});
+});
+</script>
+
+</head>
+
+<body id="blankBg" class="singleType">
+
+<div id="puprof" class="type1">
+	<h1><img src="../assets/images/common/logo.gif" alt="Prego" /></h1>
+	<div class="myImage">
+		<p>
+			{{if $image1 != ''}}
+				<img  src="{{$image1}}"/>
+			{{else}}
+				<img  src="../assets/images/common/prof_dummy.jpg"/>
+			{{/if}}
+			{{if $image2 != ''}}
+				<img  src="{{$image2}}" />
+			{{/if}}
+			{{if $image3 != ''}}
+				<img  src="{{$image3}}" />
+			{{/if}}
+		</p>
+		<h2>{{$spec_name}}<span>{{$interlingua}}</span></h2>
+		<h3>{{$title}}</h3>
+	</div>
+	<div class="myLeft">
+		<div>
+			<p class="summary">
+				{{$summary}}
+			</p>
+			<table>
+				<tbody>
+					{{if $qualifications != ''}}
+					<tr><td>
+						<span>資格</span>
+						<p>
+							{{$qualifications}}
+						</p>
+					</td></tr>
+					{{/if}}
+					{{if $actual_result != ''}}
+					<tr><td>
+						<span>実績</span>
+						<p>
+							{{$actual_result}}
+						</p>
+					</td></tr>
+					{{/if}}
+					{{if $famous != ''}}
+					<tr><td>
+						<span>著書・著名</span>
+						<p>
+							{{$famous}}
+						</p>
+					</td></tr>
+					{{/if}}
+				</tbody>
+			</table>
+
+			{{if $cartoon_url != ''}}
+				<ul class="btns">
+					<li class="btn single c"><a id="cartoon_url" href="javascript:;" data-url="{{$cartoon_url}}">動画を見る</a></li>
+				</ul>
+			{{/if}}
+
+		</div>
+	</div>
+	<div class="myRight">
+		<div>
+			<h4>Personal Data</h4>
+			<table>
+				<tbody>
+					{{if $birthday != ''}}
+					<tr>
+						<th width="60">生年月日</th>
+						<td>{{$birthday}}</td>
+					</tr>
+					{{/if}}
+					{{if $address != ''}}
+					<tr>
+						<th width="50">現住所</th>
+						<td>{{$address}}</td>
+					</tr>
+					{{/if}}
+					{{if $experience != ''}}
+					<tr><td colspan="2">
+						<span>経歴</span>
+						<p>
+							{{$experience}}
+						</p>
+					</td></tr>
+					{{/if}}
+				</tbody>
+			</table>
+
+			{{if $auth == '1' || $auth == '2' || $auth == '3'}}
+			<h4 class="h4_2">Service Fee</h4>
+			<table>
+				<tbody>
+					<tr><td>
+						{{if $auth == '1'}}
+							{{foreach from=$spec_fee_data item=v}}
+								{{if $fee_message_a!= '' && $v.servers_menu == $fee_message_a}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{elseif $fee_message_b != '' && $v.servers_menu == $fee_message_b}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{elseif $fee_message_c != '' && $v.servers_menu == $fee_message_c}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{/if}}
+							{{/foreach}}
+						{{/if}}
+						{{if $auth == '2'||$auth == ''}}
+							{{foreach from=$spec_fee_data item=v}}
+								{{if $fee_message_a!= '' && $v.servers_menu == $fee_message_a}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{elseif $fee_message_b != '' && $v.servers_menu == $fee_message_b}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{elseif $fee_message_c != '' && $v.servers_menu == $fee_message_c}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.servers_fee|number_format}}円<br/>
+								{{/if}}
+							{{/foreach}}
+						{{/if}}
+						{{if $auth == '3'}}
+							{{foreach from=$spec_fee_data item=v}}
+								{{if $fee_message_a!= '' && $v.servers_menu == $fee_message_a}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円<br/>
+								{{elseif $fee_message_b != '' && $v.servers_menu == $fee_message_b}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円<br/>
+								{{elseif $fee_message_c != '' && $v.servers_menu == $fee_message_c}}
+									{{$v.servers_menu}}&nbsp;&nbsp;{{$v.spec_fee|number_format}}円<br/>
+								{{/if}}
+							{{/foreach}}
+						{{/if}}
+					</td></tr>
+				</tbody>
+			</table>
+			{{/if}}
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

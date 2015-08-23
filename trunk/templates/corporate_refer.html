@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+</head>
+
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>クライアント様デスク</h2>
+
+		<nav>
+			<ul>
+			{{if $auth == '1'}}
+				<li><a href="corporate_unregistered.php"><span>未登録一覧</span></a></li>
+				<li class="active"><a href="corporate_search.php"><span>クライアント検索</span></a></li>
+			{{elseif $auth == '2'}}
+				<li class="active"><a href="corporate_refer.php"><span>クライアント情報</span></a></li>
+			{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>クライアント情報 参照</h3>
+			{{if $corporate_forms.id}}
+			<form name="">
+				<h4>基本情報</h4>
+
+				<table class="formTable">
+					<tbody>
+						<tr>
+							<th>アカウント名</th>
+							<td>{{$account_name}}</td>
+						</tr>
+						<tr>
+							<th>御社名</th>
+							<td>{{$corporate_forms.corporate_name}}</td>
+						</tr>
+						<tr>
+							<th>フリガナ</th>
+							<td>{{$corporate_forms.another_name}}</td>
+						</tr>
+						<tr>
+							<th>ご登録部署名</th>
+							<td>{{$corporate_forms.post_name}}</td>
+						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td>
+							{{if $region !='' && $branch != ''}}
+								{{$corporate_forms.post_code}}
+							{{/if}}
+							</td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td>{{$corporate_forms.address}}</td>
+						</tr>
+						<tr>
+							<th>TEL</th>
+							<td>
+							{{if $area_code !='' && $office_number != '' && $called_number != ''}}
+								{{$corporate_forms.tel}}
+							{{/if}}
+							</td>
+						</tr>
+						<tr>
+							<th>代表者様名</th>
+							<td>{{$corporate_forms.present}}</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td>{{$corporate_forms.url}}</td>
+						</tr>
+						{{if $auth == '1'}}
+							<tr>
+								<th>備考</th>
+								<td >
+									{{$corporate_forms.memo}}
+								</td>
+							</tr>
+						{{/if}}
+					</tbody>
+				</table>
+
+				<h4>担当者</h4>
+
+				<div id="charge" class="appendArea">
+				{{foreach from=$corporate_tantou_forms item=v}}
+					<table class="formTable">
+						<tbody>
+							<tr>
+								<th>ご担当者様　※見出しの部分も</th>
+								<td>{{$v.tantou_name}}</td>
+							</tr>
+							<tr>
+								<th>メールアドレス</th>
+								<td>{{$v.mail_address}}</td>
+							</tr>
+						</tbody>
+					</table>
+				{{/foreach}}
+				</div>
+				<p class="button">
+					<button type="button" class="btn_update no" onclick="location.href='corporate_edit.php?id={{$forms.id}}'"><span>更新</span></button>
+				</p>
+			</form>
+			{{else}}
+			<br>該当クライアント情報は存在しません。
+			{{/if}}
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

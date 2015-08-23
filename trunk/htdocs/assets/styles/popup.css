@@ -1,0 +1,399 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/popup.css
+	DESCRIPTION:	popup content shared css
+************************************************************/
+
+.thisPopup {
+	background-color:#fff;
+}
+
+.thisPopup #content {
+	background-color:#fff;
+	padding:0 10px 10px;
+}
+
+/* header
+--------------------------------------------------------*/
+
+.thisPopup header {}
+
+.thisPopup header h1 {
+	text-align:left;
+	font-size:14px;
+	padding: 5px 21px 5px 10px !important;
+	margin:0 0 10px !important;
+	border-bottom: 1px solid #e3e3e3;
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(246,246,246,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0 ); /* IE6-9 */
+	box-shadow: 0 -1px 0 #fff inset, 0 1px 1px rgba(0,0,0,0.15);
+}
+
+.thisPopup header h1 span {
+	float: left;
+	display: block;
+	width: 16px;
+	height: 17px;
+	margin: 4px 10px 0 0;
+	text-indent: -5000px;
+	background: url(../images/dashboard/h4point.png) 0 center no-repeat #E5E22A;
+}
+
+
+/* content
+--------------------------------------------------------*/
+
+.thisPopup #content {
+	clear:both;
+}
+
+.thisPopup #content h2 {
+	padding: 5px 21px 5px 20px;
+	margin-bottom: 3px;
+	border: 1px solid #e3e3e3;
+	background-color:#f6f6f6;
+}
+
+
+/* service_master
+--------------------------------------------------------*/
+
+.thisPopup #service_master #content {}
+
+.thisPopup #service_master #content div {
+	border:1px solid #e5e5e5;
+	margin-bottom:10px;
+}
+
+.thisPopup #service_master #content div table {
+	border:0;
+}
+
+.thisPopup #service_master #content div table th {
+	border:0;
+	border-top:1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+}
+
+.thisPopup #service_master #content div table tbody tr {
+	cursor:pointer;
+}
+
+.thisPopup #service_master #content h2 {
+	background:url(../images/common/accordion_close.png) 5px center no-repeat #f7f7f7;
+	cursor:pointer !important;
+	text-align:left !important;
+	padding:5px 0 5px 30px !important;
+}
+
+.thisPopup #service_master #content h2.active {
+	background:url(../images/common/accordion_open.png) 5px center no-repeat #f7f7f7;
+}
+
+/* category_select
+--------------------------------------------------------*/
+
+.thisPopup #category_select #content table tbody tr {
+	cursor:pointer;
+}
+
+
+/* specialist_profile
+--------------------------------------------------------*/
+
+#specialist_profile {padding:0 0;font-size: 14px;line-height:1.6 !important;}
+#specialist_profile #content {
+	width: 100%;
+	float:right;
+	margin-left: -230px;
+	padding: 10px 0 !important;
+}
+#specialist_profile #content h1 {
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+	margin:0 0 10px 0 !important;
+}
+#specialist_profile #pLeft {
+	float:left;
+	width: 180px;
+	padding: 10px;
+	margin-left: 10px;
+	background-color: #f7f7f7;
+}
+#specialist_profile #pLeft img {
+	width: 176px;
+	padding: 1px;
+	margin-bottom: 10px;
+	border:1px solid #ccc;
+}
+#specialist_profile #pLeft .btns {margin-top: 5px;}
+#specialist_profile #pLeft .btns li {
+	margin: 0 0 0 38px;
+}
+#specialist_profile #pRight {
+	position: relative;
+	margin: 0 30px 0 230px;
+}
+
+#specialist_profile #pLeft h2 ,
+#specialist_profile #pLeft h3 ,
+#specialist_profile #pLeft h4  {
+	clear:both;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: #f7f7f7;
+	font-weight: normal;
+}
+
+#specialist_profile #pLeft h2 {font-size: 16px !important;font-weight: bold;}
+#specialist_profile #pLeft h3 {font-size:13px !important;color:#777 !important;}
+#specialist_profile #pLeft h4 {}
+
+#specialist_profile #pRight .summary {
+	padding: 20px 0;
+	margin-bottom: 20px;
+	text-align: left;
+	border-bottom:1px solid #eee;
+}
+
+#specialist_profile #pRight table {
+	margin: 10px auto 10px;
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 2px;
+}
+#specialist_profile #pRight table {border:1px solid #ddd;}
+#specialist_profile #pRight table th ,
+#specialist_profile #pRight table td {line-height:1.4 !important;padding: 8px;border-right:1px solid #ddd;border-bottom:1px solid #ddd;text-align: center;vertical-align: top;}
+#specialist_profile #pRight table td span {font-size: 12px;}
+#specialist_profile #pRight table th {width: 100px;background-color: #f7f7f7;border-right: 3px double #ddd;}
+#specialist_profile #pRight table td {text-align: left;}
+
+/* client_select
+--------------------------------------------------------*/
+
+.thisPopup #client_select {
+	padding-top:10px;
+}
+
+.thisPopup #client_select p {
+	text-align:center;
+}
+
+/* communication_memo
+--------------------------------------------------------*/
+
+.thisPopup #communication_memo table table {
+	border:1px solid #ddd;
+	margin-top:5px;
+}
+
+.thisPopup #communication_memo table table th {
+	width:72px !important;
+}
+
+/* popup_enquete
+--------------------------------------------------------*/
+
+#enqBtn li {
+	float:left;
+	width: 174px;
+	height: 63px;
+	margin: 0 6px;
+}
+
+#enqBtn li a {
+	text-align: left;
+	display: block;
+	padding-left:46px;
+	height: 63px;
+	line-height: 63px;
+	color:#333;
+	font-size: 16px;
+}
+
+#enqBtn li#eBtn01 a {background: url(../images/btn/btn_enq01.png) 0 0 no-repeat;text-align: center;padding-left:0;}
+#enqBtn li#eBtn02 a {background: url(../images/btn/btn_enq03.png) 0 0 no-repeat;text-align: center;padding-left:0;}
+#enqBtn li#eBtn03 a {background: url(../images/btn/btn_enq02.png) 0 0 no-repeat;}
+#enqBtn li a:hover {background-position: 0 -63px !important;color:#000;}
+#enqBtn li a:active {background-position: 0 -126px !important;}
+
+/* btn
+--------------------------------------------------------*/
+
+.thisPopup #btn p {
+	overflow: hidden;
+	margin: 0 0 0;
+	padding: 8px 0;
+	border-top: 1px solid #e7e7e7;
+	background-color: #F4F4F4;
+	text-align:center;
+}
+
+/* common elements
+--------------------------------------------------------*/
+
+.thisPopup #content .formTable tr th,
+.thisPopup #content .formTable tr td {
+	padding: 3px 5px !important;
+	vertical-align: center;
+}
+
+.thisPopup p input ,
+.thisPopup .sortable td input {
+	padding: 1px 4px;
+	line-height: 1.6;
+	font-size: 11px;
+	background-color: #fff;
+	border-radius: 2px;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 6px #ddd inset, 0 1px 0 #fff;
+	margin: 1px 3px 1px 1px;
+	font-size: 13px;
+}
+
+.thisPopup p input.short ,
+.thisPopup .sortable td input.short {
+	width:100px;
+}
+
+.thisPopup .del_item {
+	width: 16px;
+	height: 16px;
+	margin: 1px 0 0 0;
+	text-indent: -10000px;
+	display: block;
+	float: left;
+	margin-right: 2px;
+	background: url(../images/icons/delete_mini.gif) 0 -1px no-repeat;
+}
+
+.thisPopup .del_item:hover {
+	background-position: 0 -17px;
+}
+
+.thisPopup .del_item:active {
+	background-position: 0 -33px;
+}
+
+.thisPopup .delete_column {
+	width:16px;
+	background-position:0 -10000px !important;
+}
+
+
+/* add btns */
+
+.thisPopup .btns {
+	margin:10px 0;
+	list-style: none;
+}
+
+.thisPopup .btns:after {
+	content: "";
+	clear: both;
+	height: 0;
+	display: block;
+	visibility: hidden;
+}
+
+.thisPopup .btns li {
+	float: left;
+}
+
+.thisPopup .btn {
+	width: 100px;
+	height: 30px;
+	text-align: center;
+	position: relative;
+	z-index: 2;
+}
+
+.thisPopup .btn a {
+	display: block;
+	height: 30px;
+	line-height: 32px;
+	color: #333;
+	text-decoration: none;
+	font-size: 12px;
+	text-shadow: 0 1px 0 #fff;
+}
+
+.thisPopup .btn a:hover ,
+.thisPopup .btn a.active ,
+.thisPopup .btn a:active {
+	text-decoration: none;
+	color: #000;
+}
+
+.thisPopup .btn_dl a {
+	background: url(../images/btn/btn_dl.gif) 0 0 no-repeat;
+}
+
+.thisPopup .btn.single a {
+	background: url(../images/btn/btn_single.gif) 0 0 no-repeat;
+}
+
+.thisPopup .btn.left a {
+	background: url(../images/btn/btn_left.gif) 0 0 no-repeat;
+}
+
+.thisPopup .btn.center a {
+	background: url(../images/btn/btn_center.gif) 0 0 no-repeat;
+}
+
+.thisPopup .btn.right a {
+	background: url(../images/btn/btn_right.gif) 0 0 no-repeat;
+}
+
+.thisPopup .btn a:hover {
+	background-position: 0 -30px;
+}
+
+.thisPopup .btn a:active {
+	background-position: 0 -60px;
+}
+
+.btn2 {
+	text-align: center;
+	font-size: 12px;
+	width: 84px;
+	height: 24px;
+	line-height: 22px;
+	border: 0;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px rgba(255,255,255,0.7),  0px 1px 0px rgba(255,255,255,0.3);
+	background: url(../images/btn/btn_blank.gif) 0 0 no-repeat;
+	cursor: pointer;
+	color: #444;
+	position: relative;
+	top:2px;
+}
+
+.btn2:hover {
+	background-position: 0 -24px !important;
+	text-decoration: none;
+	color: #444;
+}
+
+.btn2:active {
+	background-position: 0 -48px !important;
+	text-decoration: none;
+	color: #444;
+}
+
+
+/** /popup_specialist_select.php **/
+
+.specialistSelecter td {text-align: left;}
+.specialistSelecter > tbody > tr > td {border-bottom: 1px solid #ccc;}

@@ -1,0 +1,18 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/refer_print.css
+	DESCRIPTION:	refer_print css
+************************************************************/
+
+body {
+	background:url(../images/common/blank.gif) #fff;
+}
+
+#dashboard_header ,
+#container ,
+#dashboard_footer ,
+#totop {
+	display:none !important;
+}
+
+#print {display:block;}

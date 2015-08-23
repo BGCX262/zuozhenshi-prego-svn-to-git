@@ -1,0 +1,230 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/login.css
+	DESCRIPTION:	login css
+************************************************************/
+
+/* 繝ｭ繧ｰ繧､繝ｳ header
+---------------------------------------------------------------------*/
+
+#login_header {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 10;
+	width: 100%;
+	text-align: center;
+	font-style: normal;
+	color: #ddd;
+	font-size: 7pt;
+	text-align: center;
+	height:80px;
+	background-color: #AA352D;
+	box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+
+#login_header h1 {
+	width:248px;
+	height:31px;
+	margin:24px auto;
+}
+
+#login_header h1 a {
+	display:block;
+	height:31px;
+	background:url(../../images/common/header/logo_white.png) 0 0 no-repeat;
+	text-indent:-10000px;
+}
+
+
+/* 繝｡繧､繝ｳ
+--------------------------------------------------------*/
+
+article {
+}
+
+article > div {
+	position:absolute;
+	left:50%;
+	top:48%;
+	margin: -140px 0 0 -208px;
+	height: 280px;
+	width:416px;
+	overflow:hidden;
+}
+
+article h1 {
+	margin: 0;
+	text-align: center;
+	line-height:1.2;
+}
+
+article h1 span {
+	font-size: 14px;
+}
+
+#display {
+	float:left;
+	position:relative;
+}
+
+#window {
+	width:416px;
+	height:228px;
+	background:url(../../images/login/window.png) 0 0 no-repeat;
+
+}
+
+h2 {
+	height:42px;
+	line-height:60px;
+	padding:0 10px;
+	margin:0px 7px 7px;
+	font-size:14px;
+	text-shadow:0 1px 0 #fff;
+}
+
+h2 span {
+	background:transparent !important;
+}
+
+h2 span.error {
+	color:red;
+	font-weight:bold;
+}
+
+
+/* 繝�ぅ繧ｹ繝励Ξ繧､
+--------------------------------------------------------*/
+
+#display p {
+	position:absolute;
+	z-index:20;
+	left:50px;
+	top:-0;
+}
+
+#display p.first {}
+#display p.secound {display:none;}
+
+#display p span {
+	position:absolute;
+	left:225px;
+	top:105px;
+	z-index:3;
+}
+
+#display ul {
+	list-style:none;
+	position:relative;
+	left:53px;
+	top:15px;
+	z-index:1;
+	display:none;
+}
+
+
+/* 繝輔か繝ｼ繝
+--------------------------------------------------------*/
+
+#inner_wrapper {
+	margin-left:2px;
+	width:400px;
+	overflow:hidden;
+}
+
+#inner {
+	width:800px;
+	margin:14px 0 0 2px;
+}
+
+form {
+	width:400px;
+	float:left;
+	position:relative;
+}
+
+form li input[type=text] ,
+form li input[type=password] {
+	width:292px;
+	height:32px;
+	line-height:32px;
+	margin-top:5px;
+	border:0;
+	font-size:16px;
+	background-color:transparent;
+	outline:none;
+}
+
+form li.id ,
+form li.pass ,
+form li.mail  {
+	width:300px;
+	height:42px;
+	margin:0 0 10px 22px;
+	padding:0 5px 0 57px
+}
+
+form li.id {background:url(../../images/login/input_user.png) 0 0 no-repeat;}
+form li.pass {background:url(../../images/login/input_pass.png) 0 0 no-repeat;}
+form li.mail  {background:url(../../images/login/input_mail.png) 0 0 no-repeat;}
+
+form li.save {
+	text-align:right;
+	margin-right:24px;
+}
+
+form .forget ,
+form .back ,
+form .submit {
+	margin:20px 0 0 0;
+}
+
+form .forget ,
+form .back {
+	float:left;
+	padding:0 0 0 20px;
+}
+
+form .forget a {
+	padding-left:20px;
+	background:url(../../images/login/question.png) 0 0 no-repeat;
+}
+
+form .back a {
+	padding-left:20px;
+	background:url(../../images/login/back.png) 0 0 no-repeat;
+}
+
+form .submit {
+	width:102px;
+	height:33px;
+	float:right;
+	margin-right:16px;
+	margin-top: 8px;
+}
+
+form .submit input {
+	cursor:pointer;
+	width:102px;
+	height:33px;
+	line-height:33px;
+	border:0;
+	font-family:'繝｡繧､繝ｪ繧ｪ',Meiryo,sans-serif,Verdana,"�ｭ�ｳ �ｰ繧ｴ繧ｷ繝�け",'繝偵Λ繧ｮ繝惹ｸｸ繧ｴ Pro W4','Hiragino Maru Gothic Pro',Osaka;
+	background:url(../../images/login/submit_btn.png) 0 0 no-repeat;
+}
+
+form .submit input:hover {background-position:0 -33px;}
+form .submit input:active {background-position:0 -66px;}
+
+#forgetForm {
+	margin-top:30px;
+}
+
+/* footer
+--------------------------------------------------------*/
+
+footer {
+	color:#fff;
+}

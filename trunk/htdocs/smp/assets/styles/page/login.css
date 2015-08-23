@@ -1,0 +1,30 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/page/login.css
+	DESCRIPTION:	login css
+************************************************************/
+
+.content dl {
+	margin-bottom:5px;
+}
+
+.content dl dt ,
+.content dl dd {
+	padding:3px 0;
+}
+
+.content .login_btn {
+	margin:0 auto 5px;
+	width:102px;
+}
+
+.content .login_btn input {
+	cursor:pointer;
+	width:102px;
+	height:33px;
+	line-height:33px;
+	border:0;
+	font-family:'メイリオ',Meiryo,sans-serif,Verdana,"ＭＳ Ｐゴシック",'ヒラギノ丸ゴ Pro W4','Hiragino Maru Gothic Pro',Osaka;
+	background:url(../../images/login/submit_btn.png) 0 0 no-repeat;
+	margin:0 auto;
+}

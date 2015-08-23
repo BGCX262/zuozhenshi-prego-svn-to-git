@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=320,user-scalable=no" />
+    <link href="./assets/styles/default.css" rel="stylesheet" />
+	<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script src="./assets/scripts/main.js" type="text/javascript"></script>
+
+   	<title>コントロールパネル</title>
+
+	<script type="text/javascript">
+
+   		function changeVal(){
+			var obj_u_id = document.getElementById('u_id');
+   			var u_id = obj_u_id.value;
+   			var obj_id = document.getElementById('service_id');
+   			var id = obj_id.value;
+   			window.location.href="service_detail.php"+"?id="+id+"&&u_id="+u_id;
+   		}
+
+   	</script>
+
+</head>
+<body id="login">
+
+<header id="dashboard_header">
+	<h1>
+    	<a href="index.php">コントロールパネル</a>
+    </h1>
+</header>
+
+<div id="container">
+	<header>
+		<h1><span>&nbsp;</span>案件情報</h1>
+	</header>
+	<section class="content">
+		<h2>サービス情報詳細</h2>
+		<dl class="formList">
+			<dt>スペシャリスト</dt>
+			<dd>
+				{{$promise_spec_forms.spec_name}}<br />
+				<a href="profile1.php?id={{$id}}">{{$spec_profile_forms.profile_name}}</a>
+			</dd>
+			<dt>サービス名</dt>
+			<dd>{{$promise_spec_forms.service_name}}</dd>
+			<dt>実施日</dt>
+			<dd>{{$promise_spec_forms.doing_time}}</dd>
+			<dt>スペシャリストフィー</dt>
+			<dd>￥{{$service_forms.service_fee|number_format}}</dd>
+			<dt>約定S <span><a href="service_help.php">ヘルプ</a></span></dt>
+			<dd>{{$promise_s}}</dd>
+			<dt>完了F</dt>
+			<dd>{{$over_f}}</dd>
+			<dt>CF</dt>
+			<dd>{{$cf}}</dd>
+			<dt>処理履歴</dt>
+			<dd><a href="">参照</a></dd>
+			{{if $promise_spec_forms.status ==3 && isset($promise_spec_forms.satisfy_status) && !empty($satisfy_status)}}
+			<dt>アンケート</dt>
+			<dd>{{$satisfy_status}}</dd>
+			{{/if}}
+		</dl>
+	</section>
+	<input type="hidden" id="u_id" name="u_id" value="1"/>
+	<input type="hidden" id="service_id" name="service_id" value="{{$service_id}}"/>
+	{{ if $promise_spec_forms.status == 1 }}
+	<p class="btn"><a href="mailto:"><input type="button" value="受注確定" onclick="changeVal()"/></a></p>
+	{{/if}}
+</div>
+
+<footer>Copyright (C) Prego. / All rights reserved.</footer>
+
+</body>
+</html>

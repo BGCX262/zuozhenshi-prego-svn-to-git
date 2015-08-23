@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/ajaxfileupload.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+	function ajaxFileUpload(id,imgname)
+	{
+		$.ajaxFileUpload
+		(
+			{
+				url:'specialist_profile.php',
+				secureuri:false,
+				fileElementId:id,
+				dataType: 'json',
+				data:{action:'ajaximage' },
+				
+				success: function (data, status)
+				{
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != '')
+						{
+							alert(data.error);
+						}else
+						{	
+							$("#"+imgname).show();
+							$("#"+imgname+" img").attr('src',data.msg);
+							$("#filename"+imgname).val(data.filename);
+							$("#filetype"+imgname).val(data.filetype);
+							$("#image"+imgname).val(data.path);
+							
+							//var imghtml = '<div id='+data.id+'><img src="'+data.msg+'" width="240"><br><a href="javascript:;" onclick="remove_img('+data.id+');" class="delete_mini">削除</a><a href="javascript:;" onclick="" class="delete_mini">追加</a><input type="hidden" name="filename" value="'+data.filename+'" /><input type="hidden" name="filetype" value="'+data.filetype+'" /><input type="hidden" name="image" value="'+data.path+'" /></div>';
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					alert(e);
+				}
+			}
+		)
+		return false;
+	}
+	
+	function remove_img(id){
+		$("#"+id).hide();
+		$("#"+id+" img").attr('src','');
+		$("#filename"+id).val('');
+		$("#filetype"+id).val('');
+		$("#image"+id).val('');
+		$("#fileToUpload"+id).html('No file selected');
+	}
+	
+</script>	
+<title>コントロールパネル</title>
+<script type="text/javascript">
+function GoToRefer(){
+	var val = document.getElementById("id").value;
+	window.location.href="specialist_refer.php?"+"id="+val;
+}
+</script>
+
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+<article id="article" class="load">
+		<h2>スペシャリストデスク</h2>
+		<nav>
+			<ul>
+			{{if $auth == '1'}}
+				<li><a href="specialist_unregistered.php"><span>未登録一覧</span></a></li>
+				<li class="active"><a href="specialist_search.php"><span>スペシャリスト検索</span></a></li>
+			{{elseif $auth == '3'}}
+				<li class="active"><a href="specialist_edit.php"><span>スペシャリスト情報</span></a></li>
+			{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>プロフィール{{if $forms.id == '' }}登録{{else}}更新 {{/if}}{{ if $phase == 'complete' }}完了{{ /if }}</h3>
+{{ if $phase == 'input' }}
+			<p class="message">{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}内容を確認し、{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="specialist_profile.php" method="post" enctype="multipart/form-data">
+				<h4>基本情報</h4>
+				<table class="formTable">
+					<tbody>
+                       {{ if $forms.id != '' }}
+						<tr>
+							<th>会員ID</th>
+							<td>{{ $forms.id }}</td>
+						</tr>
+						<tr>
+							<th>登録日時</th>
+							<td>
+								{{ $forms.c_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="c_time" value="{{ $forms.c_time }}" />
+							</td>
+						</tr>
+						<tr>
+							<th>更新日時</th>
+							<td>
+								{{ $forms.u_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="u_time" value="{{ $forms.u_time }}" />
+							</td>
+						</tr>
+{{ /if }}
+						<tr>
+							<th class="must">プロフィール名</th>
+							<td>
+								<input type="text" class="text" name="profile_name" value="{{$forms.profile_name}}" maxlength="100"/>{{$err.profile_name}}
+							</td>
+						</tr>
+{{ if $forms.id != '' }}
+						<tr>
+							<th>プロフィールURL<br />（履歴あり）</th>
+							<td>{{$have_profile_url}}{{$forms.have_profile_url}}</td>
+						</tr>
+						<tr>
+							<th>プロフィールURL<br />（履歴なし）</th>
+							<td>{{$have_no_profile_url}}{{$forms.have_no_profile_url}}</td>
+						</tr>
+{{ /if }}
+						<tr>
+							<th>肩書</th>
+							<td>
+								<input type="text" class="text" name="title" value="{{$forms.title}}" maxlength="200"/>{{$err.title}}
+							</td>
+						</tr>
+						<tr>
+							<th rowspan = 3>画像</th>
+							<td>
+							<div id="img" >
+								<div id="1" style="display:{{if $image1 != ''}}block {{else}}none{{/if}};">
+									<img src="{{$image1}}" width="240">
+									<br>
+									<a href="javascript:;" onclick="remove_img(1);" class="delete_mini">削除</a>
+									<input type="hidden" name="filename1" id="filename1" value="{{$filename1}}">
+									<input type="hidden" name="filetype1" id="filetype1" value="{{$filetype1}}">
+									<input type="hidden" name="image1" id="image1" value="{{$image1}}">
+								</div>
+								
+								<div style="clear:both"></div>
+								<input id="fileToUpload1" type="file" name="goods_image" value="{{$forms.goods_image}}" onchange="return ajaxFileUpload('fileToUpload1','1');" >
+							</td>
+							</tr>
+							<tr><td>
+								<div id="2" style="display:{{if $image2 != ''}}block {{else}}none{{/if}};">
+									<img src="{{$image2}}" width="240">
+									<br>
+									<a href="javascript:;" onclick="remove_img(2);" class="delete_mini">削除</a>
+									<input type="hidden" name="filename2" id="filename2" value="{{$filename2}}">
+									<input type="hidden" name="filetype2" id="filetype2" value="{{$filetype2}}">
+									<input type="hidden" name="image2" id="image2" value="{{$image2}}">
+								</div>
+								<div style="clear:both"></div>
+								<input id="fileToUpload2" type="file" name="goods_image" value="{{$forms.goods_image}}" onchange="return ajaxFileUpload('fileToUpload2','2');" >
+	</td>
+							</tr>
+							<tr><td>
+								<div id="3" style="display:{{if $image3 != ''}}block {{else}}none{{/if}};">
+									<img src="{{$image3}}" width="240">
+									<br>
+									<a href="javascript:;" onclick="remove_img(3);" class="delete_mini">削除</a>
+									<input type="hidden" name="filename3" id="filename3" value="{{$filename3}}">
+									<input type="hidden" name="filetype3" id="filetype3" value="{{$filetype3}}">
+									<input type="hidden" name="image3" id="image3" value="{{$image3}}">
+								</div>
+								
+								<div style="clear:both"></div>
+								<input id="fileToUpload3" type="file" name="goods_image" value="{{$forms.goods_image}}" onchange="return ajaxFileUpload('fileToUpload3','3');" >
+							</div>
+							
+							</td>
+						</tr>
+						<tr>
+							<th>概要</th>
+							<td>
+								<textarea name="summary" maxlength="1000" >{{$forms.summary}}</textarea>{{$err.summary}}
+							</td>
+						</tr>
+						<tr>
+							<th>現住所</th>
+							<td>
+								<input type="text" class="text" name="address" value="{{$forms.address}}" maxlength="200"/>{{$err.address}}
+							</td>
+						</tr>
+						<tr>
+							<th>経歴</th>
+							<td>
+								<textarea name="experience" maxlength="1000">{{$forms.experience}}</textarea>{{$err.experience}}
+							</td>
+						</tr>
+						<tr>
+							<th>資格</th>
+							<td>
+								<textarea name="qualifications" maxlength="1000">{{$forms.qualifications}}</textarea>{{$err.qualifications}}
+							</td>
+						</tr>
+						<tr>
+							<th>実績</th>
+							<td>
+								<textarea name="actual_result" maxlength="1000">{{$forms.actual_result}}</textarea>{{$err.actual_result}}
+							</td>
+						</tr>
+						<tr>
+							<th>著書・著名</th>
+							<td>
+								<textarea name="famous" maxlength="200">{{$forms.famous}}</textarea>{{$err.famous}}
+							</td>
+						</tr>
+						<tr>
+							<th>経歴・資格・実績<br />著書/著名</th>
+							<td>
+								<textarea name="comprehensive" maxlength="1000">{{$forms.comprehensive}}</textarea>{{$err.comprehensive}}
+							</td>
+						</tr>
+						<tr>
+							<th>フィー情報</th>
+							<td>
+{{ html_options name='fee_message_a' options=$fee_message selected=$forms.fee_message_a}}
+{{ html_options name='fee_message_b' options=$fee_message selected=$forms.fee_message_b}}
+{{ html_options name='fee_message_c' options=$fee_message selected=$forms.fee_message_c}}
+{{$fee_err}}
+							</td>
+						</tr>
+						<tr>
+							<th>動画URL</th>
+							<td>
+								<input type="text" class="text" name="cartoon_url" value="{{$forms.cartoon_url}}" maxlength="200"/>{{$err.cartoon_url}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p class="button">
+
+					{{if $forms.id }}
+						<button type="button" class="btn_back" onclick="GoToRefer()"><span>戻る</span></button>
+						<button type="submit" class="btn_update" class="submit"><span>更新</span></button>
+					{{else}}
+						<button type="button" class="btn_regist" class="submit"><span>登録</span></button>
+					{{/if}}
+				</p>
+				<input type="hidden" name="id"  value="{{ $forms.id }}" />
+				<input type="hidden" name="mode" value="" />
+				<input type="hidden" name="spec_id" id="id" value="{{ $spec_id }}" />
+				<input type="hidden" name="profile_id" value="{{ $profile_id }}" />
+			</form>
+		</section>
+	</article>
+</div>
+{{/if}}
+{{ if $phase == 'complete' }}
+					<p class="message">{{ $message }}</p>
+					<ul class="result_btn">
+
+						{{if $forms.id != '' }}
+							<li><a href="specialist_search.php?hist=2">一覧に戻る</a></li>
+							<li><a href="specialist_profile.php?id={{$profile_id}}">登録した内容を更新</a></li>
+						{{else}}
+							<li><a href="specialist_refer.php?id={{$spec_id}}">続けて新規登録する</a></li>
+							<li><a href="specialist_profile.php?id={{$profile_id}}">登録した内容を更新</a></li>
+						{{/if}}
+					</ul>
+{{/if}}
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

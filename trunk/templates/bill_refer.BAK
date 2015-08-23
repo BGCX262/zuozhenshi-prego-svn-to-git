@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<link href="./assets/styles/refer.css" rel="stylesheet" />
+<link href="./assets/styles/refer_print.css" rel="stylesheet" media="print" />
+
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+	$(function(){
+		$('.btn_check').unbind('click').live('click',function(){
+			var corporate_id = $("#corporate_id").val();
+			var request_time = $("#request_time").val();
+			var request_status = $("#request_status").val();
+			var promise_id = $("#promise_id").val();
+			var flag = "btn_chk";
+			window.location.href="bill_search.php"+"?hist=2&&corporate_id="+corporate_id+"&&request_time="+request_time+"&&flag="+flag+"&&promise_id="+promise_id;
+		});
+		
+		$('.btn_fix').unbind('click').live('click',function(){
+			var corporate_id = $("#corporate_id").val();
+			var request_time = $("#request_time").val();
+			var request_status = $("#request_status").val();
+			var promise_id = $("#promise_id").val();
+			var flag = "btn_fix";
+			window.location.href="bill_search.php"+"?hist=2&&corporate_id="+corporate_id+"&&request_time="+request_time+"&&flag="+flag+"&&promise_id="+promise_id;
+		});
+		
+	});
+	function GoToBillSearch(){
+		window.location.href="bill_search.php?hist=2";
+	}
+</script>
+
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>請求デスク</h2>
+		<nav>
+			<ul>
+				<li class="active"><a href="bill_search.php"><span>請求検索</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>請求参照</h3>
+			
+			<div id="view">
+				<div id="refer_content">
+					<div id="logo">
+						<p><img src="./assets/images/common/logo.gif" alt="Prego" /></p>
+					</div>
+					<div id="firstRow">
+						<p class="title">請求書</p>
+						<p>日付：{{$date}}</p>
+					</div>
+					<div id="secondRow">
+						<p class="left">
+						{{foreach from=$corporate_forms item=v}}
+							{{$v.corporate_name}}<br />
+							{{$v.post_name}}<br />
+							{{$v.present}} 様
+						{{/foreach}}
+						</p>
+						<p class="right">
+							合同会社Prego<br />
+							〒145-0071<br />
+							東京都大田区田園調布2-51-4<br />
+							第一開発ビル2F<br />
+							TEL：03-6459-7355
+						</p>
+					</div>
+					<div id="listTable">
+						<h2>業務委託</h2>
+						<table class="table1">
+							<thead>
+								<tr>
+									<th>案件名</th>
+									<th>サービス名</th>
+									<th>スペシャリスト</th>
+									<th>金額</th>
+									<th>実施日</th>
+									<th>備考</th>
+								</tr>
+							</thead>
+							<tbody>
+							{{foreach from=$promise_data item=v}}
+								{{foreach from=$promise_spec_data item=vv}}
+									{{foreach from=$fee item=val}}
+										{{if $v.id == $vv.promise_id && $v.id== $val.promise_id && $vv.profile_id == $val.profile_id}}
+											<tr>
+												<td>{{$v.promise_name}}</td>
+												<td>{{$vv.service_name}}</td>
+												<td>{{$vv.spec_name}}</td>
+												<td>￥{{$val.servers_fee|number_format}}</td>
+												<td>{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+												<td></td>
+											</tr>
+										{{/if}}
+									{{/foreach}}
+								{{/foreach}}
+							{{/foreach}}
+							</tbody>
+						</table>
+						<table class="table2">
+							<tr>
+								<th>小計 ： </th>
+								<td>￥{{$before_tax|number_format}}</td>
+							</tr>
+							<tr>
+								<th>消費税 ： </th>
+								<td>￥{{$tax|number_format}}</td>
+							</tr>
+							<tr>
+								<th class="bold">合計A ： </th>
+								<td class="bold">￥{{$after_tax|number_format}}</td>
+							</tr>
+						</table>
+					</div>
+					<div id="listTable">
+						<h2>交通費/経費/材料費</h2>
+						<table class="table1">
+							<thead>
+								<tr>
+									<th>案件名</th>
+									<th>サービス名</th>
+									<th>分類</th>
+									<th>金額</th>
+									<th>実施日</th>
+									<th>備考</th>
+								</tr>
+							</thead>
+							<tbody>
+							{{foreach from=$promise_data item=v key=k}}
+								{{foreach from=$promise_spec_data item=vv key=kk}}
+										{{if $v.id == $vv.promise_id }}
+											{{if $vv.traffic_fee != 0 && $vv.other_fee != 0 && $vv.live_fee != 0}}
+												<tr>
+													<td>{{$v.promise_name}}</td>
+													<td>{{$vv.service_name}}</td>
+													<td>残業費</td>
+													<td>￥{{$vv.overtime_fee|number_format}}</td>
+													<td>{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>{{$v.promise_name}}</td>
+													<td>{{$vv.service_name}}</td>
+													<td>交通費</td>
+													<td>￥{{$vv.traffic_fee|number_format}}</td>
+													<td>{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+													<td>{{$vv.traffic_fee_detail}}</td>
+												</tr>
+												<tr>
+													<td>{{$v.promise_name}}</td>
+													<td>{{$vv.service_name}}</td>
+													<td>宿泊費</td>
+													<td>￥{{$vv.live_fee|number_format}}</td>
+													<td>{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+													<td>{{$vv.live_fee_detail}}</td>
+												</tr>
+												<tr>
+													<td>{{$v.promise_name}}</td>
+													<td>{{$vv.service_name}}</td>
+													<td>その他経費</td>
+													<td>￥{{$vv.other_fee|number_format}}</td>
+													<td>{{$v.doing_time|date_format:'%Y-%m-%d'}}</td>
+													<td>{{$vv.other_fee_detail}}</td>
+												</tr>
+											{{/if}}
+										{{/if}}
+								{{/foreach}}
+							{{/foreach}}
+							</tbody>
+						</table>
+						<table class="table2">
+							<tr>
+								<th class="bold">合計B ： </th>
+								<td class="bold">￥{{$traffic_fee|number_format}}</td>
+							</tr>
+						</table>
+					</div>
+					<div id="listTable">
+						<h2>その他</h2>
+						<table class="table1">
+							<thead>
+								<tr>
+									<th>内容</th>
+									<th>分類</th>
+									<th>金額</th>
+								</tr>
+							</thead>
+							<tbody>
+							{{foreach from=$request_add_data item=v}}
+								<tr>
+									<td>{{$v.content}}</td>
+									<td>支払日前倒し払い交通費</td>
+									<td>￥{{$v.money|number_format}}</td>
+								</tr>
+							{{/foreach}}
+							</tbody>
+						</table>
+						<table class="table2">
+							<tr>
+								<th class="bold">合計C ： </th>
+								<td class="bold">￥{{$other_num|number_format}}</td>
+							</tr>
+						</table>
+						
+					</div>
+					<div id="total">
+						<dl>
+							<dt>合計A+B+C</dt>
+							<dd>￥{{$all_num|number_format}}</dd>
+						</dl>
+					</div>
+					<div id="lastRow">
+						<p>支払条件：●月●日までに銀行振込</p>
+						<ul>
+							<li>振込先：</li>
+							<li class="large">みずほ銀行　五反田支店　普通預金　2693160</li>
+							<li class="large">口座名義　合同会社Prego</li>
+							<li class="small">※振込手数料は御社のご負担でお願い致します</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<p class="button">
+				<button type="button" class="btn_back" onclick="GoToBillSearch()"><span>戻る</span></button>
+				<button type="button" class="btn_print" onclick="print()"><span>印刷</span></button>
+				{{if $hidden_request_status != '1'}}
+					<button type="button" class="btn_check"><span>OK</span></button>
+				{{/if}}
+				<button type="button" class="btn_fix"><span>要修正</span></button>
+			</p>
+			<input type="hidden" id="corporate_id" value="{{$hidden_corporate_id}}"/>
+			<input type="hidden" id="request_time" value="{{$hidden_request_time}}"/>
+			<input type="hidden" id="request_status" value="{{$hidden_request_status}}"/>
+			<input type="hidden" id="promise_id" value="{{$hidden_promise_id}}"/>
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+
+<div id="print"></div>
+
+</body>
+</html>

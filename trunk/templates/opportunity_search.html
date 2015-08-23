@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+		function toPage(thepage) {
+			document.fm.page.value =  thepage;
+			document.fm.csv.value="";
+			document.fm.submit();
+			
+		}
+	</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>約定デスク</h2>
+		<nav>
+			<ul>
+				<li class="active"><a href="opportunity_search.php"><span>{{if $auth == '1'}}案件検索{{else}}案件情報{{/if}}</span></a></li>
+				{{if $auth == '1'}}
+					<li><a href="opportunity_edit.php"><span>案件登録</span></a></li>
+				{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>{{if $auth == '1'}}案件検索{{else}}案件情報{{/if}}</h3>
+			{{if $auth == '1'}}
+			<div id="search_form" class="noFix fw">
+				<form name="fm" action="opportunity_search.php" method="post" >
+					<input type="hidden" name="page" />
+					<input type="hidden" name="search" value="1" />
+					<input type="hidden" name="csv" />
+					<dl>
+						<dt>フリーワード</dt>
+						<dd>
+							<input type="text" class="long" name="free_word" value="{{ $forms.free_word}}"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt>実施日</dt>
+						<dd>
+							<input type="text" class="text_date" name="doing_time" value="{{$forms.doing_time}}" />
+						</dd>
+					</dl>
+					<p class="search_submit">
+						<button type="submit" class="submit"><span>検索</span></button>
+					</p>
+					<input type="hidden" name="" />
+				</form>
+			</div>
+			{{/if}}
+{{ if is_numeric($page.cnt) }}
+{{ if $page.cnt > 0 }}	
+			<p class="message">{{$page.cnt}}件見つかりました。</p>
+			<p align="left" class="pageNav">{{ $pageing }}</p>
+			<table id="search_result" class="sortable">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>案件名</th>
+						<th>クライアント</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				{{foreach from=$data item=v key=k}}
+					<tr>
+						<td>{{$v.id}}</td>
+						<td>{{$v.promise_name}}</td>
+						<td>{{$v.corporate_name}}</td>
+						{{if $doing_time != ''}}
+							<td class="update"><a href="opportunity_refer.php?id={{$v.id}}">参照</a></td>
+							<!-- &&doing_time={{$doing_time}} -->
+						{{else}}
+							<td class="update"><a href="opportunity_refer.php?id={{$v.id}}">参照</a></td>
+						{{/if}}
+					</tr>
+				{{/foreach}}
+				</tbody>
+			</table>
+			<p align="right" class="pageNav">{{ $pageing }}</p>
+{{ else }}
+			<p class="message">条件にマッチする情報は見つかりませんでした。</p>
+{{ /if }}
+{{ else }}
+			<p class="message">ここに検索結果が表示されます。</p>
+{{/if}}
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

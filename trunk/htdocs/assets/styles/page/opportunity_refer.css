@@ -1,0 +1,57 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/opportunity_refer.css
+	DESCRIPTION:	opportunity_refer for print
+************************************************************/
+
+body {
+	background:url(../images/common/blank.gif) #fff;
+}
+
+#dashboard_header ,
+#container ,
+#dashboard_footer ,
+#totop {
+	display:none !important;
+}
+
+#print {display:block !important;}
+
+.formTable {
+	border:1px solid #ddd;
+}
+
+th.header {
+	background-position:0 -10000px !important;
+}
+
+#print_logo {
+	text-align:left;
+	float:left;
+}
+
+#print_text {
+	float:right;
+	text-align:right;
+	font-size:12px;
+	line-height:1.4;
+}
+
+#table1 , 
+#table2 {
+	clear:both;
+}
+
+#print_list {
+	margin-top:10px;
+	font-size:12px;
+	line-height:1.4;
+	text-align:left;
+}
+
+#print_last {
+	margin-top:20px;
+	font-size:12px;
+	line-height:1.4;
+
+}

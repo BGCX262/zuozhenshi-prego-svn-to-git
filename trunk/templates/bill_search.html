@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js"
+type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+	function setS(corporate_id,corporate_name) {
+		document.getElementById("corporate_name").value = corporate_name;
+		document.getElementById("corporate_id").value = corporate_id;
+	}
+	function setRequestAddVal(request_id,content_temp,money_temp){
+		window.location.href="bill_search.php?hist=2&&request_flag='request_add'&&content_temp="+content_temp+"&&money_temp="+money_temp+"&&request_id="+request_id;
+	}
+</script>
+</head>
+<body>
+	{{$logout}}
+	<div id="container">
+		{{$menu}}
+		<article id="article" class="load">
+			<h2>請求デスク</h2>
+			<nav>
+				<ul>
+					<li class="active"><a href="bill_search.php"><span>請求検索</span></a></li>
+				</ul>
+			</nav>
+			<section id="content">
+				<h3>請求検索</h3>
+				{{if $auth == '1'}}
+				<div id="search_form" class="nofix">
+					<form name="fm" action="bill_search.php" method="post">
+						<input type="hidden" name="page" />
+						<input type="hidden" name="search" value="1" />
+						<input type="hidden" name="csv" />
+						<dl>
+							<dt>クライアント名</dt>
+							<dd>
+								<input type="text" id="corporate_name" name="corporate_name"
+									class="float-left" value="{{$forms.corporate_name}}" /> <a
+									href="popup_client_select.php" class="popup btn float-left">選択</a>
+								<input type="hidden" name="corporate_id" id="corporate_id" />
+							</dd>
+						</dl>
+						<dl>
+							<dt>支払年月</dt>
+							<dd class="floats">
+								{{ html_options name='year' options=$year selected=$forms.year
+								}} <span>&nbsp;&nbsp; &nbsp;</span> {{ html_options name='month'
+								options=$month selected=$forms.month }}
+							</dd>
+						</dl>
+						<p class="search_submit">
+							<button type="submit" class="submit">
+								<span>検索</span>
+							</button>
+
+						</p>
+						<input type="hidden" name="" />
+					</form>
+				</div>
+				{{/if}} {{ if is_numeric($page.cnt) }} {{ if $page.cnt > 0 }}
+				<p class="message">{{ $page.cnt }}件登録されています。</p>
+				<table id="search_result" class="sortable">
+					<thead>
+						<tr>
+							<th>クライアント名</th>
+							<th>支払年月</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{foreach from=$request_data item=v}}
+							{{foreach from=$mutirow item=vv}}
+								{{if $v.promise_id == $vv.promise_id}}
+									<tr>
+										<td>{{$v.corporate_name}}</td>
+										<td>{{$v.request_time|date_format:"%Y/%m"}}</td>
+										<td class="update">
+											<a href="bill_refer.php?id={{$v.id}}&&corporate_id={{$v.corporate_id}}&&request_time={{$v.request_time}}&&request_status={{$v.request_status}}&&promise_id={{$v.promise_id}}">参照</a>
+											{{if $auth == '1'}}<a href="popup_payment_edit.php?id={{$v.id}}&&model='request_add'" class="popup">追加</a>{{/if}}
+									</tr>
+								{{/if}}
+							{{/foreach}}
+						{{/foreach}}
+				</table>
+				<p align="right" class="pageNav">{{ $pageing }}</p>
+				{{ else }}
+				<p class="message">条件にマッチする情報は見つかりませんでした。</p>
+				{{ /if }} {{ else }}
+				<p class="message">ここに検索結果が表示されます。</p>
+				{{/if}}
+			</section>
+		</article>
+	</div>
+	<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

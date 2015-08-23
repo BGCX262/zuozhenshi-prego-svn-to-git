@@ -1,0 +1,193 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/refer.css
+	DESCRIPTION:	refer bill & payment css
+************************************************************/
+
+/* set
+--------------------------------------------------------*/
+
+* {margin:0;padding:0;}
+body {font-size:12px;line-height:1.6;'メイリオ',Meiryo,sans-serif,Verdana,"ＭＳ Ｐゴシック",'ヒラギノ丸ゴ Pro W4','Hiragino Maru Gothic Pro',Osaka;}
+
+#print {display:none;}
+
+
+/* layout
+--------------------------------------------------------*/
+
+#refer_content {
+	padding:10px;
+}
+
+#refer_content p {
+	text-align:left;
+	margin:0;
+}
+
+#refer_content li {
+	text-align:left;
+}
+
+/* logo
+--------------------------------------------------------*/
+
+#logo{
+	margin-bottom:10px;
+}
+
+/* firstRow
+--------------------------------------------------------*/
+
+#firstRow {
+	padding-bottom:20px;
+}
+
+#firstRow:after {
+	content: "";
+    clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+
+#firstRow p {
+	float:right;
+}
+
+#firstRow p.title {
+	font-size:20px;
+	float:left
+}
+
+
+/* secondRow
+--------------------------------------------------------*/
+
+#secondRow {
+	clear:both;
+}
+
+#secondRow .left {
+	float:left;
+}
+
+#secondRow .right {
+	float:right;
+}
+
+/* listTable
+--------------------------------------------------------*/
+
+#listTable {
+	clear:both;
+}
+
+#listTable h2 {
+	font-size:16px;
+	padding:0;
+	margin:0;
+}
+
+#listTable table.table1 {
+	width:100%;
+	border-collapse:collapse;
+	margin:0 0 10px;
+}
+
+#listTable table.table1 th ,
+#listTable table.table1 td {
+	padding:3px;
+}
+
+#listTable table.table1 thead th {
+	background-color:#eee;
+	border:1px solid #ddd;
+	font-weight:normal;
+}
+
+#listTable table.table1 tbody td {
+	border:1px solid #ddd;
+}
+
+#listTable table.table2 {
+	float:right;
+	margin-bottom:5px;
+}
+
+#listTable table.table2 tbody th ,
+#listTable table.table2 tbody td {
+	font-weight:normal;
+	font-size:13px;
+}
+
+#listTable table.table2 tbody th.bold ,
+#listTable table.table2 tbody td.bold {
+	font-weight:bold;
+}
+
+#listTable table.table2 tbody th {
+	text-align:right;
+}
+
+
+
+/* total
+--------------------------------------------------------*/
+
+#total {
+	clear:both;
+}
+
+#total dl {
+	margin-top:10px;
+	border:3px solid #ccc;
+	min-height:1px;
+}
+
+#total dl:after {
+	content: "";
+    clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+
+#total dl dt ,
+#total dl dd {
+	padding:3px 10px;
+}
+
+#total dl dt {
+	float:left;
+}
+
+#total dl dd {
+	float:right;
+	text-align:right;
+	border-left:3px solid #ccc;
+}
+
+/* lastRow
+--------------------------------------------------------*/
+
+#lastRow {
+	clear:both;
+}
+
+#lastRow p {
+	margin-top:12px;
+}
+
+#lastRow ul {
+	margin-top:12px;
+}
+
+#lastRow ul .large {
+	font-size:114%;
+}
+
+#lastRow ul .small {
+	margin-top:10px;
+	font-size:92%;
+}

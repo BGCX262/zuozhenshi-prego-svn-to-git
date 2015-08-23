@@ -1,0 +1,116 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/default.css
+	DESCRIPTION:	default css
+************************************************************/
+
+/* インポート
+---------------------------------------------------------- */
+@import url(layout.css);
+@import url(shared.css);
+@import url(./plugin/jquery-ui-1.7.2.custom.css);
+@import url(./plugin/uniform.sitemanager.css);
+@import url(./plugin/tablesorter.css);
+
+/* リセット
+---------------------------------------------------------- */
+*{
+	margin:				0;
+	padding:			0;
+
+}
+html{
+	overflow-y:			scroll;
+	height:				100%;
+}
+html>/**/body{
+	overflow:			-moz-scrollbars-vertical;
+}
+html:first-child body{
+	min-height:			100%;
+	padding-bottom:		1px;
+}
+/* タグの再定義
+---------------------------------------------------------- */
+body {
+	font-family: 				'メイリオ',Meiryo,sans-serif,Verdana,"ＭＳ Ｐゴシック",'ヒラギノ丸ゴ Pro W4','Hiragino Maru Gothic Pro',Osaka;
+	_font-family:				"ＭＳ Ｐゴシック";
+	margin:						0;
+	padding:					0;
+	text-align:					center;
+	color:						#333333;
+	font-size:					10.5pt;
+	line-height:				200%;
+}
+
+h1 {
+	font-size:					17pt;
+	font-weight:				normal;
+	margin:						20px 0 30px;
+	line-height:				200%;
+}
+
+h2 {
+	padding:					16px 0 16px 30px;
+	font-size:					20px;
+	text-align:					left;
+	font-weight:				normal;
+}
+
+h3 {
+	text-align:					left;
+}
+
+h4 {
+	font-size:					10pt;
+	color:						#000;
+	font-weight:				bold;
+	padding:					10px 0 10px 10px;
+	text-align:					left;
+}
+
+ul {
+	list-style-type:			none;
+}
+img {
+	border: 					none;
+	vertical-align: 			bottom;
+}
+p {
+	margin-bottom:				10px;
+}
+a {
+	outline:					none;
+	color:						#444;
+	text-decoration:			none;
+}
+a:hover {
+	color:						#777;
+}
+input,.text,textarea {
+	font-family: 				'メイリオ',Meiryo,sans-serif,Verdana,"ＭＳ Ｐゴシック",'ヒラギノ丸ゴ Pro W4','Hiragino Maru Gothic Pro',Osaka;
+	*font-family: 				"MS Pゴシック","ＭＳ Ｐゴシック","MS P Gothic";
+	line-height:				120%;
+}
+table {
+	border-collapse:			collapse;
+}
+a:hover {
+	text-decoration:			underline;
+}
+label, button {
+	cursor:						pointer;
+}
+
+footer {
+	text-align:					center;
+	font-style:					normal;
+	font-size:					7pt;
+	text-align:					center;
+}
+
+/* レガシーブラウザ向け html5タグの認識 */
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary {
+	display:block;
+}

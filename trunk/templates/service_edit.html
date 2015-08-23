@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+var service_spec_fee = true;
+	function setS( id, val ) {
+		document.getElementById("category_id").value=id;
+		document.getElementById("kinds").value=val;
+	}
+	//function service_update(){
+	//	alert(0);
+	//}
+	function service_update(){
+		var service_fee = $('.service_fee').val();
+		var spec_fee = $('.spec_fee').val()*1.5;
+		if(service_fee<=spec_fee)
+			return false;
+		if(!window.confirm("サービスマスタ登録  150%を超えています。よろしいですか？","次に進む","入力し直す"))
+			return false;
+		return true;
+	}	
+
+</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+<article id="article" class="load">
+		<h2>サービスマスタ</h2>
+		<nav>
+			<ul>
+				<li><a href="service_list.php"><span>一覧</span></a></li>
+				<li class="active"><a href="service_edit.php"><span>登録</span></a></li>
+				<li><a href="service_category.php"><span>カテゴリ</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>サービスマスタ{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}{{ if $phase == 'complete' }}完了{{ /if }}</h3>
+{{ if $phase == 'input' }}
+			<p class="message">{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}内容を確認し、{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="service_edit.php" method="post">
+				<h4>基本情報</h4>
+
+				<table class="formTable">
+					<tbody>
+{{ if $forms.id != '' }}
+						<tr>
+							<th>ID</th>
+							<td>{{$forms.id}}</td>
+						</tr>
+						<tr>
+							<th>登録日時</th>
+							<td>
+				{{ $forms.c_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="c_time" value="{{ $forms.c_time }}" />
+							</td>
+						</tr>
+						<tr>
+							<th>更新日時</th>
+							<td>
+				{{ $forms.u_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="u_time" value="{{ $forms.u_time }}" />
+							</td>
+						</tr>
+{{/if}}
+						<tr>
+							<th class="must">SKU</th>
+							<td><input type="text" class="short" name="sku" value="{{$forms.sku}}" maxlength="100"/>{{$err.sku}}</td>
+						</tr>
+						<tr>
+							<th>サービスメニュー</th>
+							<td><input type="text" name="service_menu" value="{{$forms.service_menu}}" maxlength="100"/>{{$err.service_menu}}</td>
+						</tr>
+						<tr>
+							<th>サービスフィー</th>
+							<td><input type="text" name="service_fee" 
+							{{if $forms.service_fee == 0}}
+								value = ""
+							{{else}}
+								value="{{$forms.service_fee}}"
+							{{/if}}
+							 maxlength="10"  class="service_fee"/>円{{$err.service_fee}}</td>
+						</tr>
+						<tr>
+							<th>スペシャリストフィー</th>
+							<td><input type="text" name="spec_fee" 
+							{{if $forms.spec_fee == 0}}
+								value = ""
+							{{else}}
+								value="{{$forms.spec_fee}}" 
+							{{/if}}
+							maxlength="10" class="spec_fee"/>円{{$err.spec_fee}}</td>
+						</tr>
+						<tr>
+							<th>キャプション</th>
+							<td><textarea name="caption" maxlength="1000">{{$forms.caption}}</textarea>{{$err.caption}}</td>
+						</tr>
+						<tr>
+							<th>メモ</th>
+							<td><textarea name="memo" maxlength="1000">{{$forms.memo}}</textarea>{{$err.memo}}</td>
+						</tr>
+						<tr>
+							<th class="must">カテゴリ</th>
+							<td>
+							<select class="categordata" >
+								<option value="">カテゴリ選択</option>
+									{{foreach from=$categorydata item=v}}
+										<option value="{{$v.id}} " {{if $v.category_name== $forms.kinds}}selected="selected"{{/if}} >{{$v.category_name}}</option>
+									{{/foreach}}
+								</select>(ここにカテゴリがない場合はサービスマスタでカテゴリ登録をしてください){{$err.kinds}}
+								
+								<input type="hidden" name="category_id" id="category_id" value="{{$forms.category_id}}" />
+								<input type="hidden" name="kinds" id="kinds" value="{{$forms.kinds}}">
+							</td>
+							
+						</tr>
+					</tbody>
+				</table>
+				
+				<p class="button">
+				{{if $forms.id}}
+					<button type="button" class="btn_update" ><span>更新</span></button>
+				{{else}}
+					<button type="button" class="btn_regist"><span>登録</span></button>
+				{{/if}}
+				</p>
+				<input type="hidden" name="id" value="{{ $forms.id }}" />
+				<input type="hidden" name="mode" value="" />
+			</form>
+		</section>
+	</article>
+</div>
+
+<div id="dialog" >
+</div>
+
+{{/if}}
+{{ if $phase == 'complete' }}
+<p class="message">{{ $message }}</p>
+	<ul class="result_btn">
+	<li><a href="service_list.php">一覧に戻る</a></li>
+	{{ if $forms.id == '' }}
+	<li><a href="service_edit.php">続けて新規登録する</a></li>
+	{{else}}
+	<li><a href="service_edit.php?id={{$forms.id}}">登録した内容を更新</a></li>
+	{{/if}}
+	</ul>
+{{/if}}
+
+<footer id="dashboard_footer">{{$footer}}</footer>
+
+<script type="text/javascript">
+function service_update(){
+	var service_fee = $('.service_fee').val();
+	var spec_fee = $('.spec_fee').val()*1.5;
+	if(!service_fee || !spec_fee)
+		return true;
+	if(service_fee<spec_fee)
+		return false;
+	if(!confirm("サービスマスタ登録  150%を超えています。よろしいですか？"))
+		return false;
+	return true;
+}
+
+$('.categordata').change(function(){
+	if(!$(this).val()){
+		$('#category_id').val('');
+		$('#kinds').val('');
+		return;
+	}
+	$('#category_id').val($(this).val());
+	$('#kinds').val($('.categordata option:selected').text());
+});
+</script>
+</body></html>

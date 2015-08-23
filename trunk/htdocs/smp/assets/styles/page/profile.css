@@ -1,0 +1,73 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/page/profile.css
+	DESCRIPTION:	profile css
+************************************************************/
+
+/* profile
+--------------------------------------------------------*/
+
+#specialist_profile {}
+
+#specialist_profile h1 ,
+#specialist_profile h2 ,
+#specialist_profile h3 ,
+#specialist_profile h4 {
+	text-align:center !important;
+	margin:5px 0;
+	padding:0;
+	font-weight:normal;
+}
+
+#specialist_profile h1 img {
+	width:180px;
+}
+
+#specialist_profile h2 {
+	font-size:20px;
+}
+
+#specialist_profile h3 {
+	font-family:Georgia;
+	font-size:14px;
+	color:#aaa;
+}
+
+#specialist_profile h4 {
+	font-size:14px;
+	padding:5px 0;
+	margin-bottom:0 !important;
+	background-color:#fafafa;
+	border-top:1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+}
+
+#specialist_profile p.img {
+	width:150px;
+	height:180px;
+	margin:10px auto;
+	background-color:#eee;
+}
+
+#specialist_profile p.summary {
+	margin:20px 0;
+	padding:0 1%;
+}
+
+#specialist_profile p.summary.border {
+	border-bottom:1px solid #e5e5e5;
+	padding-bottom:20px;
+}
+
+#specialist_profile table {
+	width:100%;
+	border-top:1px solid #e5e5e5;
+}
+
+#specialist_profile table td {
+	vertical-align:top;
+	width:48%;
+	padding:6px 1%;
+	border-bottom:1px solid #e5e5e5;
+}
+

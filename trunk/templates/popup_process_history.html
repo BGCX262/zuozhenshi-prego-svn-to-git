@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/popup.css" rel="stylesheet" />
+
+<script src="./assets/scripts/popup.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+
+</head>
+<body>
+<div class="thisPopup" id="process_history">
+
+<header>
+	<h1><span>&nbsp;</span>履歴一覧</h1>
+</header>
+
+<section id="content">
+	<table class="sortable">
+    <thead>
+        <tr>
+			<th>処理日時</th>
+			<th>内容</th>
+			<th>処理者</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{foreach from=$operation_history_data item=v}}
+        <tr>
+			<td>{{$v.operate_time}}</td>
+			<td>{{$v.operate_details}}</td>
+			<td>{{$v.operate_man}}</td>
+        </tr>
+     {{/foreach}}
+    </tbody>
+	</table>
+</section></div>
+</body>
+</html>

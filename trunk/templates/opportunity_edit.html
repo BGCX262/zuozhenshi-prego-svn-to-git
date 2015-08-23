@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+
+$("select").live("change",function(){
+	  var index = $(this).index(); 
+	  var span = $(this).siblings().get(index-1);
+	  $(span).text($(this).val());
+})
+
+$(function() {
+
+	$("#btn_regist").hide();
+
+
+	$('.text_date').live('click',function(){
+
+		if(!$(this).hasClass("hasDatepicker")){
+			$(this).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: 'yy-mm-dd'
+			});
+			$(this).blur();
+			$(this).focus();
+		}
+	});
+
+
+	$('.del_item').live("click",function(){
+		var deleteItem = function(){
+			that.closest("table").remove();
+		}
+		var that = $(this);
+		var v = $('input[type=text]',$(this).closest('tr')).val();
+		if(v != ""){
+			customConfirm('削除しますか？',"",$(this),function(){
+				deleteItem();
+			});
+		}else {
+			deleteItem();
+		}
+	});
+
+	/*
+	$(".smartspinner").live('click',function(){
+		if(!$(this).hasClass('onSpin')){
+			$(this).spinit({ width:54, height: 20});
+			$(this).blur();
+			$(this).focus();
+		}
+	});
+	*/
+
+
+
+	$('.single').click(function(){
+		//$("#specialist").append(html);
+	});
+
+	$('.btn_copy').unbind().click(function(e){
+		$("#id").val("");
+		$(".text_date").each(function(){
+			$(this).val(null);
+		});
+		$(".spin_time").each(function(){
+			$(this).val(null);
+		});
+		$(".spin_minute").each(function(){
+			$(this).val(null);
+		});
+		$(".btn_update").hide();
+		$(".btn_copy").hide();
+		$(".btn_regist").show();
+		$(".btn_back").hide();
+	});
+
+	var radio_id;
+	var radio_id_flag;
+	var input_id_flag;
+	var overtime_fee_id;
+	$(".overtime_have").click(function(obj){
+		radio_id = $(this).attr("id");
+		radio_id_flag = radio_id.substr(15);
+		input_id_flag = radio_id.substr(13,1);
+		overtime_fee_id = "overtime_fee_"+input_id_flag;
+
+		if(radio_id_flag == '0'){
+			$("#"+overtime_fee_id).val("");
+			$("#"+overtime_fee_id).attr("disabled","true");
+		}else{
+			$("#"+overtime_fee_id).removeAttr("disabled");
+		}
+	});
+
+	var traffic_fee_have_id;
+	var traffic_fee_have_id_flag;
+	var traffic_fee_flag;
+	var traffic_fee_detail_flag;
+	var traffic_fee_id;
+	var traffic_fee_detail_id;
+	$(".traffic_fee_have").click(function(obj){
+		traffic_fee_have_id = $(this).attr("id");
+		traffic_fee_have_id_flag = traffic_fee_have_id.substr(18);
+		traffic_fee_flag = traffic_fee_have_id.substr(16,1);
+		traffic_fee_id = "traffic_fee_"+traffic_fee_flag;
+		traffic_fee_detail_id = "traffic_fee_detail_"+traffic_fee_flag;
+
+		if(traffic_fee_have_id_flag == '0'){
+			$("#"+traffic_fee_id).val("");
+			$("#"+traffic_fee_detail_id).val("");
+			$("#"+traffic_fee_id).attr("disabled","true");
+			$("#"+traffic_fee_detail_id).attr("disabled","true");
+		}else{
+			$("#"+traffic_fee_id).removeAttr("disabled");
+			$("#"+traffic_fee_detail_id).removeAttr("disabled");
+		}
+
+	});
+
+	var live_fee_have_id;
+	var live_fee_have_id_flag;
+	var live_fee_flag;
+	var live_fee_id;
+	var live_fee_detail_id;
+	$(".live_fee_have").click(function(obj){
+		live_fee_have_id = $(this).attr("id");
+		live_fee_have_id_flag = live_fee_have_id.substr(15);
+		live_fee_flag = live_fee_have_id.substr(13,1);
+		live_fee_id = "live_fee_"+live_fee_flag;
+		live_fee_detail_id = "live_fee_detail_"+live_fee_flag;
+
+		if(live_fee_have_id_flag == '0'){
+			$("#"+live_fee_id).val("");
+			$("#"+live_fee_detail_id).val("");
+			$("#"+live_fee_id).attr("disabled","true");
+			$("#"+live_fee_detail_id).attr("disabled","true");
+		}else{
+			$("#"+live_fee_id).removeAttr("disabled");
+			$("#"+live_fee_detail_id).removeAttr("disabled");
+		}
+
+	});
+
+	var other_fee_have_id;
+	var other_fee_have_id_flag;
+	var other_fee_flag;
+	var other_fee_id;
+	var other_fee_name_id;
+	var other_fee_detail_id;
+	$(".other_fee_have").click(function(obj){
+		other_fee_have_id = $(this).attr("id");
+		other_fee_have_id_flag = other_fee_have_id.substr(16);
+		other_fee_flag = other_fee_have_id.substr(14,1);
+		other_fee_id = "other_fee_"+other_fee_flag;
+		other_fee_name_id = "other_fee_name_"+other_fee_flag;
+		other_fee_detail_id = "other_fee_detail_"+other_fee_flag;
+
+		if(other_fee_have_id_flag == '0'){
+			$("#"+other_fee_id).val("");
+			$("#"+other_fee_name_id).val("");
+			$("#"+other_fee_detail_id).val("");
+			$("#"+other_fee_id).attr("disabled","true");
+			$("#"+other_fee_name_id).attr("disabled","true");
+			$("#"+other_fee_detail_id).attr("disabled","true");
+		}else{
+			$("#"+other_fee_id).removeAttr("disabled");
+			$("#"+other_fee_name_id).removeAttr("disabled");
+			$("#"+other_fee_detail_id).removeAttr("disabled");
+		}
+
+	});
+/*
+	$('#service_master #content table tbody tr .preview a').live('click',function(){
+		var tr = $(this).closest("tr");
+		var sku = tr.children().html();
+		var service_menu = tr.children().next().html();
+		//var spec_fee = tr.children().next().next().html();
+		//var service_fee = tr.children().next().next().next().html();
+		var caption = tr.children().next().next().next().next().html();
+		var memo = tr.children().next().next().next().next().next().html();
+		//var service_id = tr.children().next().next().next().next().next().next().children().val();
+		var id =  tr.attr("id") ;
+		var service_id = id.split("_")[1];
+		var refarr =  tr.attr("ref").split("_") ;
+		var spec_fee = refarr[0];
+		var service_fee = refarr[1];
+		var model = $("#model").val();
+
+		if (model == 'specl'){
+			if (setSpec(service_id,service_menu,spec_fee,service_fee)){
+				parent.$.colorbox.close();
+			}else {
+				return;
+			}
+		}else if( model != '' ){
+			setSpec(service_id,service_menu,spec_fee,service_fee);
+
+		}else{
+			setService(service_menu,service_id);
+		}
+		parent.$.colorbox.close();
+
+	});
+	*/
+});
+
+function setServiceMaster(service_id, service_menu,spec_fee, service_fee ){
+	setService(service_menu,service_id);
+	/*
+	var model = $("#model").val();
+	if (model == 'specl'){
+		if (setSpec(service_id,service_menu,spec_fee,service_fee)){
+			parent.$.colorbox.close();
+			return;
+		}else {
+			return;
+		}
+	}else if( model != '' ){
+		setSpec(service_id,service_menu,spec_fee,service_fee);
+	}else{
+		setService(service_menu,service_id);
+	}
+	*/
+	parent.$.colorbox.close();
+}
+
+function setS(corporate_id,corporate_name){
+
+	document.getElementById("corporate_name").value = corporate_name;
+	document.getElementById("corporate_id").value = corporate_id;
+}
+
+var table_num ;
+function setSpec(profile_id,profile_name, spec_id, spec_name){
+	var model = $("#model").val();
+	table_num = $(".accordionTable").length;
+	var hour = $('#hour ').html();
+	var minute = $('#minute').html();
+	var html = '<table class="formTable accordionTable">';
+	html += '<thead><tr><th colspan="2">スペシャリスト</th></tr></thead>';
+	html += '<tbody>';
+	html += '<tr><th><a href="javascript:;" class="del_item">削除</a> スペシャリスト</th><td><input type="text" class="text" id="spec_name"  value="' + spec_name + '" name="spec_name[]" maxlength="100" readOnly="readOnly"/><br />';
+	html += '<input type="text" class="text" id="profile_name" name="profile_name[]" value="' + profile_name + '" readOnly="readOnly"/>';
+	html += '<input type="hidden" name="profile_id[]" id="profile_id" value="' + profile_id + '" />';
+	html += '<input type="hidden" id="spec_id" name="spec_id[]" value="' +spec_id + '" /></td></tr>';
+	html += '<tr><th>サービス</th>	<td><a href="popup_service_master.php?sid=' +spec_id + '" onclick="show(this)" class="popup btn">選択する</a><input style="border:0;box-shadow:none;background-color:transparent" type="text" class="text" name="service_name[]" value="" maxlength="100" readOnly="readOnly"/><input type="hidden" class="text" name="service_id[]" value=""/></td></tr>';
+	html += '<tr><th>実施日</th>	<td class="floats"><input type="text" class="text_date" name="day[]"/>'+hour+'</select><span>時&nbsp;</span>	'+minute+'<span>分</span></td></tr>';
+	html += '<tr><th>前日メール不要</th><td><label><input type="checkbox" name="before_mail'+table_num+'" value="1"/></label></td></tr>';
+	html += '</tbody>';
+	html += '</table>';
+	$("#specialist").append(html);
+
+	/*
+	document.getElementById("profile_id").value=profile_id;
+	document.getElementById("profile_name").value=profile_name;
+	document.getElementById("spec_id").value=spec_id;
+	document.getElementById("spec_name").value=spec_name;
+
+	document.getElementById("profile_id").setAttribute("id","");
+	document.getElementById("profile_name").setAttribute("id","");
+	document.getElementById("spec_id").setAttribute("id","");
+	document.getElementById("spec_name").setAttribute("id","");
+	*/
+}
+
+var temp;
+var temp_next;
+function show(obj){
+	$(obj).colorbox({width:'800px',height:'600px'});
+	temp=$(obj).next();
+	temp_next = temp.next();
+}
+
+function setService(service_menu,service_id){
+	temp.val(service_menu);
+	temp_next.val(service_id);
+}
+
+
+function GoToRefer(){
+	var val = document.getElementById("id").value;
+	window.location.href="opportunity_refer.php?"+"id="+val;
+}
+
+</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>約定デスク</h2>
+		<nav>
+			<ul>
+				<li><a href="opportunity_search.php"><span>案件検索</span></a></li>
+				{{if $auth == '1'}}
+					<li class="active"><a href="opportunity_edit.php"><span>案件登録</span></a></li>
+				{{/if}}
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>案件情報{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}{{ if $phase == 'complete' }}完了{{ /if }}</h3>
+
+{{ if $phase == 'input' }}
+			<p class="message">{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}内容を確認し、{{ if $forms.id == '' }}登録{{ else }}更新{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="opportunity_edit.php" method="post">
+				<h4>基本情報</h4>
+				<table class="formTable">
+					<tbody>
+						<tr>
+							<th class="must">クライアント名</th>
+							<td>
+								<a href="popup_client_select.php" class="popup btn" >選択</a>
+								<input style="border:0;box-shadow:none;background-color:transparent" type="text" class="text" id="corporate_name" name="corporate_name" value="{{$promise_forms.corporate_name}}" readOnly="readOnly"/>{{$err.corporate_name}}
+								<input type="hidden" name="corporate_id" id="corporate_id" value="{{$promise_forms.corporate_id}}" />
+							</td>
+						</tr>
+						<tr>
+							<th class="must">案件名</th>
+							<td>
+								<input type="text" class="text" name="promise_name" value="{{$promise_forms.promise_name}}" maxlength="200"/>{{$err.promise_name}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h4>スペシャリスト</h4>
+				<table class="formTable">
+					<tbody>
+						<tr><td>
+					<ul class="btns b10">
+					<li class="btn single c"><a href="popup_specialist_select.php" class="popup">ｽﾍﾟｼｬﾘｽﾄを選択</a></li>{{$err.spec_group}}
+				</ul></td></tr>
+				</table>
+
+
+				<div id="specialist" class="appendArea">
+			{{foreach from=$promise_spec_forms item=v name="member" key=k}}
+
+				<table class="formTable accordionTable">
+				<thead>
+					<tr>
+						<th colspan="2">スペシャリスト</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr>
+				<th><a href="javascript:;" class="del_item">削除</a> スペシャリスト</th>
+					<td>
+						<input type="text" class="text"  name="spec_name[]" value="{{$v.spec_name}}" maxlength="100" readOnly="readOnly"/>{{$err.spec_name[$smarty.foreach.member.index]}}<br />
+						<input type="text" class="text"  name="profile_name[]" value="{{$v.profile_name}}" readOnly="readOnly"/>{{$err.profile_name[$smarty.foreach.member.index]}}
+						<input type="hidden" name="profile_id[]"  value="{{$v.profile_id}}" />
+						<input type="hidden" name="spec_id[]" value="{{$v.spec_id}}" />
+					</td>
+				</tr>
+				<tr><th>サービス</th>
+				<td><a id="service_href" href="popup_service_master.php?sid={{$v.spec_id}}" onclick="show(this)" class="popup btn">選択する</a>
+				<input style="border:0;box-shadow:none;background-color:transparent" type="text" class="text" name="service_name[]" value="{{$v.service_name}}" maxlength="100" readOnly="readOnly"/><input type="hidden" class="text" name="service_id[]" value="{{$v.service_id}}"/>{{$err.service_name[$smarty.foreach.member.index]}}
+
+				</td>
+				</tr>
+				<tr><th>実施日</th>
+					<td class="floats"><input type="text" class="text_date" name="day[]" value="{{$v.day}}"/>
+						{{ html_options  name='hour[]' options=$prego_hour selected=$v.hour separator='&nbsp;' }}
+						<span>時&nbsp;</span>
+						{{ html_options  name='minute[]' options=$prego_minute selected=$v.minute separator='&nbsp;' }}
+						<span>分</span>
+						{{$err.doing_time[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				
+				<tr><th>前日メール不要</th>
+					<td>
+						<label>
+
+							<input type="checkbox" name="before_mail{{$k}}"
+
+							{{if $v.before_mail =='1' }} checked="true" {{/if}}
+
+							value="1"/>
+						</label>
+					</td>
+				</tr>
+{{ if $forms.id != '' }}
+				<tr><th>残業有無</th>
+					<td>
+							{{foreach from=$overtime_have item=vv key=kk}}
+								<label>
+									<input type="radio" class="overtime_have" name="overtime_have{{$k}}" id="overtime_have{{$k}}_{{$kk}}"
+									{{if $v.overtime_have == $kk}}
+										checked
+									{{/if}}
+									value="{{$kk}}"/>{{$vv}}
+								</label>
+							{{/foreach}}
+					</td>
+				</tr>
+				<tr><th>残業費</th>
+					<td>
+						<input type="text" class="short" name="overtime_fee[]" id="overtime_fee_{{$k}}"
+						{{if $v.overtime_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.overtime_fee}}"
+						{{/if}}
+						maxlength="10"/>円{{$err.overtime_fee[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>交通費有無</th>
+					<td>
+					{{foreach from=$traffic_fee_have item=vv key=kk}}
+								<label>
+									<input type="radio" name="traffic_fee_have{{$k}}" class="traffic_fee_have" id="traffic_fee_have{{$k}}_{{$kk}}"
+									{{if $v.traffic_fee_have == $kk}}
+										checked
+									{{/if}}
+									value="{{$kk}}"/>{{$vv}}
+								</label>
+						{{/foreach}}
+					</td>
+				</tr>
+				<tr>
+				<th>！交通費</th>
+					<td>
+						<input type="text" class="short" name="traffic_fee[]" id="traffic_fee_{{$k}}"
+						{{if $v.traffic_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.traffic_fee}}"
+						{{/if}}
+						maxlength="10"/>円{{$err.traffic_fee[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>！交通費詳細</th>
+					<td>
+						<input type="text" class="text" name="traffic_fee_detail[]" id="traffic_fee_detail_{{$k}}"
+						{{if $v.traffic_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.traffic_fee_detail}}"
+						{{/if}}
+						maxlength="1000"/>{{$err.traffic_fee_detail[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr>
+				<th>！宿泊費有無</th>
+					<td>
+					
+					{{foreach from=$live_fee_have item=vv key=kk}}
+								<label>
+									<input type="radio" name="live_fee_have{{$k}}" class="live_fee_have" id="live_fee_have{{$k}}_{{$kk}}"
+									{{if $v.live_fee_have == $kk}}
+										checked
+									{{/if}}
+									value="{{$kk}}"/>{{$vv}}
+								</label>
+						{{/foreach}}
+					</td>
+				</tr>
+				<tr><th>！宿泊費</th>
+					<td>
+						<input type="text" class="short" name="live_fee[]" id="live_fee_{{$k}}"
+						{{if $v.live_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.live_fee}}"
+						{{/if}}
+						 maxlength="10" />円{{$err.live_fee[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>！宿泊費詳細</th>
+					<td>
+						<input type="text" class="text" name="live_fee_detail[]" id="live_fee_detail_{{$k}}"
+						{{if $v.live_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.live_fee_detail}}"
+						{{/if}}
+						maxlength="1000"/>{{$err.live_fee_detail[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>！その他経費有無</th>
+					<td>
+					{{foreach from=$other_fee_have item=vv key=kk}}
+								<label>
+									<input type="radio" name="other_fee_have{{$k}}" class="other_fee_have" id="other_fee_have{{$k}}_{{$kk}}"
+									{{if $v.other_fee_have == $kk}}
+										checked
+									{{/if}}
+									value="{{$kk}}"/>{{$vv}}
+								</label>
+						{{/foreach}}
+					</td>
+				</tr>
+				<tr><th>！その他経費</th>
+					<td>
+						<input type="text" class="short" name="other_fee[]" id="other_fee_{{$k}}"
+						{{if $v.other_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.other_fee}}"
+						{{/if}}
+						maxlength="10"/>円{{$err.other_fee[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>！その他経費名目</th>
+					<td>
+						<input type="text" name="other_fee_name[]" id="other_fee_name_{{$k}}"
+						{{if $v.other_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.other_fee_name}}"
+						{{/if}}
+						 maxlength="100"/>{{$err.other_fee_name[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				<tr><th>！その他経費詳細</th>
+					<td>
+						<input type="text" class="text" name="other_fee_detail[]" id="other_fee_detail_{{$k}}"
+						{{if $v.other_fee_have != '1'}}
+							value="" disabled="true"
+						{{else}}
+							value="{{$v.other_fee_detail}}"
+						{{/if}}
+						 maxlength="200"/>{{$err.other_fee_detail[$smarty.foreach.member.index]}}
+					</td>
+				</tr>
+				{{/if}}
+				</tbody>
+				</table>
+				<input type="hidden" name="pro_id[]" value="{{$v.id}}" />
+				{{/foreach}}
+				</div>
+				<!--
+				<p style="color:red;text-align:left;">！業務終了後修正に使用</p>
+				 -->
+				<p class="button">
+
+				{{if $forms.id}}
+					<button type="button" class="btn_back" onclick="GoToRefer()"><span>戻る</span></button>
+					<button type="button" class="btn_update"><span>更新</span></button>
+					<button type="button" id="btn_regist" class="btn_regist"><span>登録</span></button>
+					<button type="button" class="btn_copy"><span>この案件を繰り返して設定する</span></button>
+				{{else}}
+					<button type="button" class="btn_regist"><span>登録</span></button>
+				{{/if}}
+				</p>
+				<input type="hidden" name="id" id="id" value="{{ $forms.id }}" />
+				<input type="hidden" name="mode" value="" />
+				<input type="hidden" name="promise_id" value="{{$promise_forms.id}}">
+				
+				<div id="hour" style="display: none;">
+					{{ html_options  name='hour[]' options=$prego_hour   }}
+				</div>
+				<div id="minute" style="display: none;">
+					{{ html_options  name='minute[]' options=$prego_minute  }}
+				</div>
+			</form>
+		</section>
+	</article>
+</div>
+{{/if}}
+{{ if $phase == 'complete' }}
+
+					<p class="message">{{ $message }}</p>
+					<ul class="result_btn">
+						{{if $forms.id != '' }}
+							<li><a href="opportunity_search.php?hist=2">一覧に戻る</a></li>
+							<li><a href="opportunity_edit.php?id={{$promise_id}}">登録した内容を更新</a></li>
+						{{else}}
+							<li><a href="opportunity_edit.php">続けて新規登録する</a></li>
+							<li><a href="opportunity_edit.php?id={{$promise_id}}">登録した内容を更新</a></li>
+						{{/if}}
+					</ul>
+{{/if}}
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

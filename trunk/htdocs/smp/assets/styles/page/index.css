@@ -1,0 +1,31 @@
+/***********************************************************
+	PJ: 			Shift admin
+	PATH:			/assets/styles/page/index.css
+	DESCRIPTION:	index css
+************************************************************/
+
+.content ul li a {
+	display:block;
+	font-size:16px;
+	margin:10px 0;
+	border-radius: 4px;
+	cursor: default;
+	text-shadow: 0 1px 0 #fff;
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(246,246,246,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0 ); /* IE6-9 */
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 0 #fff inset, 0 -1px 0 #fff inset, 0 1px 1px rgba(0,0,0,0.1);
+	position: relative;
+	padding: 10px;
+}
+
+.content ul li a span {
+	display:block;
+	background:url(../../images/common/arrow_right.png) right center no-repeat;
+}

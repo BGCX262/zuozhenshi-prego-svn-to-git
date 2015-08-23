@@ -1,0 +1,19 @@
+	<aside id="accordion">
+    	<div id="aside_inner">
+    		<p><a href="javascript:;">→</a></p>
+    		{{foreach from=$pregomenu key=mk item=mv name="menum"}}
+	    		{{if $mv.auth }}
+	    			<ul id="side_module_{{$mk-1}}" class="{{$mv.class}}_m">
+		    			<li><a href="javascript:;"><span>{{$mv.name}}</span></a></li>
+						<ol>
+				    		{{foreach from=$mv.li key=lik item=liv name="menuli"}}
+								{{if $liv.auth}}
+									<li><a href="{{$lik}}.php">{{$liv.name}}</a></li>
+								{{/if}}
+				    		{{/foreach}}
+						</ol>
+		    		</ul>
+	    		{{/if}}
+    		{{/foreach}}
+        </div>
+    </aside>

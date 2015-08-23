@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>アカウントデスク</h2>
+		<nav>
+			<ul>
+				<li><a href="account_list.php"><span>アカウント検索</span></a></li>
+				<li class="active"><a href="account_edit.php"><span>アカウント登録</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>アカウント{{if $forms.id == '' }}登録{{else}}情報変更{{/if}}{{ if $phase == 'complete' }}完了{{ /if }}</h3>
+{{ if $phase == 'input' }}
+			<p class="message">{{ if $forms.id == '' }}登録{{ else }}情報変更{{ /if }}内容を確認し、{{ if $forms.id == '' }}登録{{ else }}情報変更{{ /if }}ボタンをクリックしてください。</p>
+			<form name="fm" action="account_edit.php" method="post" >
+				<h4>基本情報</h4>
+
+				<table class="formTable">
+					<tbody>
+{{ if $forms.id != '' }}
+						<tr>
+							<th>ID</th>
+							<td>
+								{{ $forms.id }}
+							</td>
+						</tr>
+						<tr>
+							<th>登録日時</th>
+							<td>
+								{{ $forms.c_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="c_time" value="{{ $forms.c_time }}" />
+							</td>
+						</tr>
+						<tr>
+							<th>更新日時</th>
+							<td>
+								{{ $forms.u_time|date_format:"%Y/%m/%d %H:%M" }}<input type="hidden" name="u_time" value="{{ $forms.u_time }}" />
+							</td>
+						</tr>
+{{ /if }}
+						<tr>
+							<th class="must">種別</th>
+							<td>
+{{ html_radios id='sorts' name='sorts' options=$sorts selected=$forms.sorts }}{{ $err.sorts}}
+							</td>
+						</tr>
+						<tr>
+							<th class="must">ログインID</th>
+							<td><input type="text" name="login_id" value="{{$forms.login_id}}" maxlength="20"/>{{ $err.login_id}}</td>
+						</tr>
+						<tr>
+							<th class="must">パスワード</th>
+							<td><input type="password" name="login_pwd" value="{{$forms.login_pwd}}" maxlength="50"/>{{ $err.login_pwd}}</td>
+						</tr>
+						<tr>
+							<th class="must">アカウント名</th>
+							<td><input type="text" name="user_name" value="{{$forms.user_name}}" maxlength="100"/>{{ $err.user_name}}</td>
+						</tr>
+						<tr>
+							<th>状態</th>
+							<td><label>
+										<input type="checkbox" name="login_flgs"  {{if $forms.login_flgs == '1'}} checked="checked" {{/if}} value="1" />
+									ログイン不可
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="button">
+					{{if $forms.id }}
+						<button type="submit" class="btn_update" class="submit"><span>情報を変更</span></button>
+					{{else}}
+						<button type="button" class="btn_regist" class="submit"><span>登録</span></button>
+					{{/if}}
+				</p>
+				<input type="hidden" name="id" value="{{ $forms.id }}" />
+				<input type="hidden" name="other_id" value="{{ $forms.other_id }}" />
+				<input type="hidden" name="mode" value="" />
+			</form>
+		</section>
+	</article>
+</div>
+{{/if}}
+{{ if $phase == 'complete' }}
+					<p class="message">{{ $message }}</p>
+					
+					<ul class="result_btn">
+						{{if $forms.id != ''}}
+							<li><a href="account_list.php?hist=2">一覧に戻る</a></li>
+							<li><a href="account_edit.php?id={{$forms.id}}">登録した内容を更新</a></li>
+						{{else}}
+							<li><a href="account_edit.php">続けて新規登録する</a></li>
+							<li><a href="account_edit.php?id={{$forms.flag}}">登録した内容を更新</a></li>
+						{{/if}}
+					</ul>
+{{/if}}
+
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>

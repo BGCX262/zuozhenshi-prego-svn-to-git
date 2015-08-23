@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="UTF-8">
+<link href="../assets/styles/default.css" rel="stylesheet" />
+<script src="../assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="../assets/scripts/import.js" type="text/javascript"></script>
+<script src="../assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<script src="../assets/scripts/popup.js" type="text/javascript"></script>
+   	<title>コントロールパネル</title>
+	<script type="text/javascript">
+$(function(){
+	$('#cartoon_url').unbind('click').click(function(){
+		var url = $(this).data('url');
+		window.open(url, 'mywindow2', 'width=600, height=700, menubar=no, toolbar=no, scrollbars=yes');
+	});
+});
+</script>
+</head>
+<body id="login">
+
+<header id="dashboard_header">
+	<h1>
+    	<a href="index.php">コントロールパネル</a>
+    </h1>
+</header>
+
+
+
+
+<article id="article" class="load">
+
+<div class="thisPopup" id="specialist_profile">
+<section id="content">
+
+
+
+
+<div id="container">
+	<section class="content" id="specialist_profile">
+
+		<h1><img src="../assets/images/common/logo.gif" alt="prego" /></h1>
+
+		<p class="img">
+		{{if $image != ''}}
+			<img src="../{{$image}}" />
+		{{/if}}
+		</p>
+
+		<h2>{{$spec_name}}</h2>
+		<h3>{{$interlingua}}</h3>
+		<h4>{{$title}}</h4>
+
+		<p class="summary">
+			{{$summary}}
+		</p>
+
+		<table class = "formTable">
+			<tbody>
+				<tr>
+				<th>生年月日</th>
+					<td>{{$spec_forms.birthday}}</td>
+					<th>所在地</th>
+					<td>{{$address}}</td>
+				</tr>
+				<tr>
+				<th>経歴</th>
+					<td>{{$experience}}</td>
+
+					<th>資格</th>
+					<td>{{$qualifications}}</td>
+				</tr>
+				<tr>
+				<th>実績</th>
+					<td>{{$actual_result}}</td>
+					<th>著者・著作</th>
+					<td>{{$famous}}</td>
+				</tr>
+				<tr>
+				<th>動画を見る</th>
+					<td>
+					{{if $profile_forms.cartoon_url != ''}}
+									<ul class="btns b10">
+							<li class="btn single c"><a id="cartoon_url" href="javascript:;" data-url="{{$profile_forms.cartoon_url}}">動画を見る</a></li>
+						</ul>
+							{{/if}}
+					</td>
+<th>サービスフィー</th>
+<td>{{$profile_forms.fee_message_a}} {{$profile_forms.fee_message_b}} {{$profile_forms.fee_message_c}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</section>
+
+	</section>
+</div>
+</article>
+
+</div>
+
+<footer>Copyright (C) Prego. / All rights reserved.</footer>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{{ if $page.end > 1 }}
+	{{ if $page.current > 1 }}
+		<a href="javascript:toPage({{ $page.current-1 }})" >前の{{ $page.item }}件</a>&nbsp;&nbsp;
+	{{ /if }}
+	
+	{{ foreach from=$page.paging key=k item=v }}
+		{{ if $page.current == $v }}
+			<a class="current">{{ $v }}</a>
+		{{ else }}
+			<a href="javascript:toPage({{ $v }})" >{{ $v }}</a>
+		{{ /if }}
+	{{ /foreach }}
+	{{ if $page.end > $page.current }}
+		<a href="javascript:toPage({{ $page.current+1 }})" >次の{{ $page.item }}件</a>
+	{{ /if }}
+{{ /if }}

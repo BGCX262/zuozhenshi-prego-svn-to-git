@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="./assets/styles/default.css" rel="stylesheet" />
+<script src="./assets/scripts/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="./assets/scripts/import.js" type="text/javascript"></script>
+<script src="./assets/scripts/plugin/jquery.datasort.js" type="text/javascript"></script>
+<title>コントロールパネル</title>
+<script type="text/javascript">
+
+function setSpec(profile_id,profile_name, spec_id, spec_name){
+	
+	document.getElementById("spec_name").value=spec_name;
+	document.getElementById("spec_id").value=spec_id;
+}
+
+
+function setPayAddVal(payment_id,content_temp,money_temp){
+	window.location.href="payment_search.php?hist=2&&pay_flag='payment_add'&&content_temp="+content_temp+"&&money_temp="+money_temp+"&&payment_id="+payment_id;
+}
+
+
+
+
+</script>
+</head>
+<body>
+{{$logout}}
+<div id="container">
+{{$menu}}
+	<article id="article" class="load">
+		<h2>支払デスク</h2>
+		<nav>
+			<ul>
+				<li class="active"><a href="payment_search.php"><span>支払検索</span></a></li>
+			</ul>
+		</nav>
+		<section id="content">
+			<h3>支払検索</h3>
+			{{if $auth == '1'}}
+			<div id="search_form" class="nofix">
+				<form name="fm" action="payment_search.php" method="post" >
+				<input type="hidden" name="page" />
+				<input type="hidden" name="search" value="1" />
+				<input type="hidden" name="csv" />
+					<dl>
+						<dt>スペシャリスト名</dt>
+						<dd>
+							<input type="text" id="spec_name" name="spec_name" class="float-left" value="{{$forms.spec_name}}" />
+							<a href="popup_specialist_select.php" class="popup btn float-left">選択</a>
+							<input type="hidden" name="spec_id" id="spec_id" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>支払年月</dt>
+						<dd class="floats">
+{{ html_options name='year' options=$year selected=$forms.year }}													
+							<span>&nbsp;&nbsp;	&nbsp;</span>
+{{ html_options name='month' options=$month selected=$forms.month }}						
+						</dd>
+					</dl>
+					<p class="search_submit">
+						<button type="submit" class="submit"><span>検索</span></button>
+					</p>
+					<input type="hidden" name="" />
+				</form>
+			</div>
+			{{/if}}
+{{ if is_numeric($page.cnt) }}
+	{{ if $page.cnt > 0 }}
+			<p class="message">{{ $page.cnt }}件登録されています。</p>
+			
+			<table id="search_result" class="sortable">
+				<thead>
+					<tr>
+						<th>スペシャリスト名</th>
+						<th>支払年月</th>
+						<th>操作</th>
+						<th>結果</th>
+					</tr>
+				</thead>
+				<tbody>
+				{{foreach from=$payment_data item=v key=k}}
+					<tr>
+						<td>{{$v.spec_name}}</td>
+						<td>{{$v.pay_time}}</td>
+						<td class="update">
+							<a href="payment_refer.php?id={{$v.id}}&&spec_id={{$v.spec_id}}&&pay_time={{$v.pay_time}}&&pay_status={{$v.pay_status}}">参照</a>
+							{{if $auth == '1'}}<a href="popup_payment_edit.php?id={{$v.id}}" class="popup">追加</a>{{/if}}
+						</td>
+						<td>
+						{{foreach from=$pay_status_arr item=vv key=k}}
+							{{if $k == $v.pay_status}}
+								{{$vv}}
+							{{/if}}
+						{{/foreach}}
+						</td>
+					</tr>
+				{{/foreach}}
+			</table>
+			<p align="right" class="pageNav">{{ $pageing }}</p>
+	{{ else }}
+			<p class="message">条件にマッチする情報は見つかりませんでした。</p>
+	{{ /if }}
+{{ else }}
+			<p class="message">ここに検索結果が表示されます。</p>
+{{/if}}	
+		</section>
+	</article>
+</div>
+<footer id="dashboard_footer">{{$footer}}</footer>
+</body>
+</html>
